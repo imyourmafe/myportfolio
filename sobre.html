@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sobre — Maria Fernanda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body data-page="sobre">
+    <!-- ====== Cabeçalho ====== -->
+    <header class="site-header">
+      <nav class="nav container">
+        <button id="toggleTema" class="brand" type="button">&lt;/&gt;</button>
+        <ul class="menu">
+          <li><a class="menu-link" href="sobre.html">Sobre</a></li>
+          <li><a class="menu-link" href="projetos.html">Projetos</a></li>
+          <li><a class="menu-link" href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section id="sobre">
+        <div class="perfil">
+          <img class="perfil-foto" src="images/IMG_5417.jpg" alt="Foto de perfil">
+          <div class="perfil-textos">
+            <h1>Maria Fernanda de Almeida Maneira</h1>
+            <p class="subtitulo">Desenvolvedora Front-End &amp; Designer iniciante</p>
+            <p class="bio">
+              Sou estudante do curso Engenharia da Computação, buscando criar interfaces web e design.
+            </p>
+            <ul class="chips">
+              <li class="chip">HTML</li>
+              <li class="chip">CSS</li>
+              <li class="chip">FIGMA</li>
+              <li class="chip">CANVA</li>
+              <li class="chip">CAPCUT</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="boasVindas" class="boas-vindas" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>&copy; 2025 MARIA FERNANDA MANEIRA — Desenvolvido com HTML, CSS e JavaScript</small>
+    </footer>
+
+    <script>
+      (function() {
+        var page = document.body.dataset.page;
+        document.querySelectorAll('.menu a').forEach(a => {
+          a.classList.toggle('ativo', a.getAttribute('href').includes(page));
+        });
+      })();
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
