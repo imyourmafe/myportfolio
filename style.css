@@ -1,0 +1,531 @@
+:root{
+  /*MODO CLARO*/
+    --p1:#531222;
+    --p2:#972E48;
+    --p3:#BC6E81;
+    --p4:#F5BAC9;
+    --p5:#FFEEF2;
+  /*MODO ESCURO*/
+    --s1:#010A24;
+    --s2:#021347;
+    --s3:#021E73;
+    --s4:#67749B;
+    --s5:#E6E8EE;
+
+  /* mapeamento dinâmico */
+  --bg: var(--p5);
+  --card: #f0b2cc;
+  --text: var(--p1);
+  --muted: #5c4d53;
+  --brand: var(--p2);
+  --brand-2: var(--p4);
+  --chip-bg: #d85c88;
+  --chip-text: #3a2b36;
+  --chev-bg:var(--p4);
+  --chev-fg:#610018;
+  --divisor: #c47d99;
+}
+
+html[data-theme="dark"]{
+  --bg: var(--s1);
+  --card: #061127;
+  --text: var(--s5);
+  --muted: #bfc8ee;
+  --brand: var(--s3);
+  --brand-2: var(--s4);
+  --chip-bg:#254279;
+  --chip-text:#e9eeff;
+  --chev-bg:#e9edf5;
+  --chev-fg:#10204d;
+  --divisor: #708dcc;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family:'Alexandria', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  opacity: 0;
+  filter: blur(4px);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+body.fade-in {
+  opacity: 1;
+  filter: blur(0);
+}
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(900px 600px at 12% 18%, color-mix(in oklab, var(--brand-2) 45%, transparent) 0%, transparent 60%),
+    radial-gradient(700px 500px at 85% 28%, color-mix(in oklab, var(--brand) 35%, transparent) 0%, transparent 65%),
+    linear-gradient(120deg, color-mix(in oklab, var(--bg) 92%, white), color-mix(in oklab, var(--bg) 70%, var(--brand-2)));
+  filter: saturate(1.05);
+  opacity: .35;
+  animation: bgFloat 18s ease-in-out infinite alternate;
+}
+@keyframes bgFloat{
+  0%   {transform: translate3d(0,0,0) scale(1);}
+  50%  {transform: translate3d(0,-8px,0) scale(1.01);}
+  100% {transform: translate3d(0,4px,0) scale(1);}
+}
+html[data-theme="dark"] body::before{
+  opacity: .28;
+  background:
+    radial-gradient(900px 600px at 10% 20%, color-mix(in oklab, var(--brand-2) 25%, transparent) 0%, transparent 60%),
+    radial-gradient(700px 500px at 88% 30%, color-mix(in oklab, var(--brand) 20%, transparent) 0%, transparent 65%),
+    linear-gradient(120deg, color-mix(in oklab, var(--bg) 80%, black), color-mix(in oklab, var(--bg) 60%, var(--brand)));
+}
+@media (prefers-reduced-motion: reduce){
+  body::before{animation: none;}
+}
+
+/* Cabeçalho */
+.site-header{
+  border-bottom:1px solid color-mix(in oklab, var(--text) 15%, transparent);
+  background:color-mix(in oklab, var(--bg) 90%, white);
+  position:sticky; top:0; z-index:10;
+}
+.nav{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 0;
+}
+.brand{
+  background:none; border:none; cursor:pointer;
+  display: inline-grid;
+  place-items: center;
+  width: 50px; height: 50px;
+  border-radius: 999px;
+  font-weight: 900; font-size: 36px;
+  color:var(--brand-2);
+   margin-left: 2rem;
+}
+.menu{display:flex; list-style:none; gap:16px;}
+.menu-link{
+  text-decoration:none; color:var(--text);
+  padding:.45rem .8rem; border-radius:10px; font-weight:600;
+}
+.menu-link.ativo{border:1px solid var(--brand); }
+.menu-link:hover{background:color-mix(in oklab, var(--brand-2) 20%, transparent);}
+
+/* Telas */
+main{padding:30px 0; min-height:calc(100vh - 120px);}
+.tela{display:none;}
+.tela--ativa{display:block;}
+.tela-titulo{text-align:center; color:var(--brand); margin-bottom:20px;}
+
+/* Seção Sobre */
+#sobre{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 3rem 1rem 4rem;
+}
+.perfil{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 36px;
+  background:var(--brand-2);
+  border-radius:18px;
+  padding: 32px;
+  box-shadow:0 6px 26px rgba(0,0,0,.06);
+  max-width: 900px;
+  margin-inline: auto;
+}
+.perfil-foto{
+  width:200px; height:200px; border-radius:100%;
+  border:8px solid var(--brand-2); object-fit:cover;
+}
+.perfil-textos{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.perfil-textos h1{
+  margin: 0;
+  font-size: 1.6rem;
+}
+.perfil-textos .subtitulo{
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+.perfil-textos .bio{
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.chips{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center; list-style:none;
+}
+.chip{
+  background:var(--chip-bg); color:var(--chip-text);
+  padding:.5rem 1rem; border-radius:20px; font-weight:800;
+}
+
+/* Seção Projetos (Sanfona) */
+.grid-projetos{
+  align-items: start;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  gap: 36px;
+  margin-top: 24px;
+  padding-bottom: 40px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.projeto-card{
+  height: auto;
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 26px rgba(0,0,0,.06);
+  transform: translateY(0) scale(1);
+  transition: transform .25s ease, box-shadow .25s ease;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+}
+.projeto-card:hover{
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 14px 34px rgba(0,0,0,.14);
+}
+.projeto-thumb{
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .35s ease, filter .35s ease;
+}
+.projeto-thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.projeto-thumb:hover img{
+  transform: scale(1.04);
+  filter: saturate(1.05);
+}
+.projeto-accordion{
+  flex: 0 0 auto;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+.projeto-accordion[open] .chevron.aberto {transform: rotate(180deg);}
+.projeto-accordion:not([open]) .projeto-desc{
+  display: none;
+  padding: 0;
+  border: 0;
+}
+.projeto-info{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--brand);
+  width: 100%;
+  margin: 0;
+  padding: 14px 18px;
+  cursor: pointer;
+  list-style: none;
+  border: none;
+  border-radius: 0;
+  user-select: none;
+}
+.projeto-info::-webkit-details-marker{
+  display: none;
+}
+.projeto-titulo{
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--p5);
+  text-align: left;
+}
+.chevron{
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--chip-bg);
+  color: var(--chev-fg);
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.projeto-accordion[open] .chevron{
+  transform: rotate(180deg);
+}
+.projeto-desc{
+  padding: 12px 16px 16px;
+  border-top: 1px solid color-mix(in oklab, var(--brand) 10%, transparent);
+  background: color-mix(in oklab, var(--divisor) 65%, white);
+  color: var(--text);
+}
+@media (max-width: 700px){
+  .grid-projetos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Seção Contatos */
+#contato{
+  padding: 3rem 1rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lista-contatos{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+.lista-contatos .item-contato:last-child{border-bottom: none;}
+.item-contato{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--chip-bg);
+  padding: 14px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  border-bottom: 3px solid color-mix(in oklab, var(--text) 40%, transparent);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.item-contato .icone{
+  flex: 0 0 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: var(--brand-2);
+  color: var(--brand);
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 18px;
+}
+.item-contato a,
+.item-contato a:link,
+.item-contato a:visited{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.item-contato a:hover,
+.item-contato a:focus{
+  text-decoration: underline;
+  color: var(--brand);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.10);
+}
+
+/* Rodapé */
+.site-footer{
+  border-top:1px solid color-mix(in oklab, var(--text) 15%, transparent);
+  text-align:center; padding:20px 0; background:color-mix(in oklab, var(--card) 80%, rgb(255, 255, 255));
+}
+
+/* Mensagem dinâmica de boas-vindas */
+.boas-vindas{
+  max-width: 900px;
+  width: 100%;
+  padding: 1.2rem 1rem;
+  border-radius: 12px;
+  background: var(--brand-2);
+  color: var(--brand);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  animation: boasVindasFade .25s ease-out both;
+}
+.boas-vindas:empty{
+  display: none;
+}
+@keyframes boasVindasFade{
+  from{ opacity: 0; transform: translateY(-6px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+/* Formulário flutuante de e-mail */
+.popup-form{
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.popup-form.aberta{
+  display: flex;
+}
+.popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+}
+.popup-card{
+  position: relative;
+  background: var(--card);
+  color: var(--text);
+  padding: 1.6rem;
+  border-radius: 14px;
+  width: min(420px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  box-shadow: 0 12px 28px rgba(0,0,0,.25);
+  animation: fadeIn .25s ease-out both;
+  z-index: 1;
+}
+.popup-card h3{margin: 0 0 .4rem;}
+.popup-card label{
+  font-weight: 600;
+  font-size: .92rem;
+}
+.popup-card input,
+.popup-card textarea{
+  border: 1px solid color-mix(in oklab, var(--brand) 22%, transparent);
+  border-radius: 10px;
+  padding: .6rem .7rem;
+  font: inherit;
+  background: var(--bg);
+  color: var(--text);
+}
+.popup-actions{
+  display: flex;
+  gap: .6rem;
+  margin-top: .4rem;
+}
+.popup-actions button[type="submit"]{
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: .6rem 1rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--brand));
+  background-size: 200% 100%;
+  animation: gradShift 6s ease infinite;
+  color: var(--p5);
+}
+@keyframes fadeIn{
+  0%{ background-position: 0% 50%;}
+  50%{ background-position: 100% 50%;}
+  100%{ background-position: 0% 50%;}
+}
+.link-btn{
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.msg-confirmacao{
+  display: none;
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--brand-2);
+  color: var(--brand);
+  padding: .55rem 1rem;
+  border-radius: 10px;
+  font-weight: 800;
+  z-index: 1;
+  box-shadow: 0 6px 16px rgba(0,0,0,.18);
+  animation: fadeIn .2s ease-out both;
+}
+body.modal-aberta{overflow: hidden;}
+
+/* ===== Filtros de Projetos ===== */
+.filtros-projetos{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: flex-start;
+  margin: .25rem auto 2.5rem;
+  padding-bottom: .4rem;
+  max-width: 1100px;
+  padding-left: 1.5rem;
+}
+.filtros-projetos::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100vw;
+  height: 1px;
+  background: color-mix(in oklab, var(--text) 15%, transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+.filtro{
+  appearance: none;
+  background: none;
+  border: none;
+  padding: .35rem .25rem;
+  color: color-mix(in oklab, var(--text) 80%, transparent);
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  position: relative;
+}
+.filtro::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -0.45rem;
+  height: 3px;
+  background: transparent;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease, background-color .25s ease;
+}
+.filtro:hover{
+  color: var(--text);
+}
+.filtro:hover::after{
+  background: color-mix(in oklab, var(--brand) 50%, transparent);
+  transform: scaleX(1);
+}
+.filtro.ativo{
+  color: var(--text);
+}
+.filtro.ativo::after{
+  background: var(--brand);
+  transform: scaleX(1);
+}
+

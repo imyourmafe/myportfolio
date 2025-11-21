@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contato — Maria Fernanda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body data-page="contato">
+    <header class="site-header">
+      <nav class="nav container">
+        <button id="toggleTema" class="brand" type="button">&lt;/&gt;</button>
+        <ul class="menu">
+          <li><a class="menu-link" href="sobre.html">Sobre</a></li>
+          <li><a class="menu-link" href="projetos.html">Projetos</a></li>
+          <li><a class="menu-link" href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h2 class="tela-titulo">Contatos</h2>
+      <ul class="lista-contatos">
+        <li class="item-contato"><span>📧</span> <a href="mailto:mariafernandamaneira@hotmail.com" class="link-email">mariafernandamaneira@hotmail.com</a></li>
+        <li class="item-contato"><span>📱</span> <a href="tel:+5513991648694">(13) 99164-8694</a></li>
+        <li class="item-contato"><span>💼</span> <a href="https://www.linkedin.com/in/maria-fernanda-maneira" target="_blank">linkedin.com/in/maria-fernanda-maneira</a></li>
+        <li class="item-contato"><span>💻</span> <a href="https://github.com/imyourmafe" target="_blank">github.com/imyourmafe</a></li>
+        <li class="item-contato"><span>⬇️</span> <a href="https://www.canva.com/design/DAG4afv-JpA/XehV0zzFCiO8OxYIsb_xwg/edit?utm_content=DAG4afv-JpA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">Baixar Currículo</a></li>
+      </ul>
+
+<!-- Formulário de envio de mensagem -->
+    <div id="formEmail" class="popup-form" aria-hidden="true">
+    <div class="popup-backdrop" data-fechar></div>
+
+    <form id="emailForm" class="popup-card" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+        <h3 id="formTitle">Envie uma mensagem</h3>
+
+        <label for="nome">Seu nome</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="assunto">Assunto</label>
+        <input type="text" id="assunto" name="assunto" required>
+
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+
+        <div class="popup-actions">
+        <button type="submit">Enviar</button>
+        <button type="button" id="fecharForm" class="link-btn" data-fechar>Cancelar</button>
+        </div>
+    </form>
+
+    <div id="mensagemConfirmacao" class="msg-confirmacao" role="status" aria-live="polite">
+        Mensagem enviada com sucesso!
+    </div>
+    </div>
+    </main>
+
+    <footer class="site-footer">
+      <small>&copy; 2025 MARIA FERNANDA MANEIRA — Desenvolvido com HTML, CSS e JavaScript</small>
+    </footer>
+
+    <script>
+      (function(){
+        var page = document.body.dataset.page;
+        document.querySelectorAll('.menu a').forEach(a => {
+          a.classList.toggle('ativo', a.getAttribute('href').includes(page));
+        });
+      })();
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
