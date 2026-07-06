@@ -80,26 +80,56 @@ function renderSaudacao() {
 document.addEventListener('DOMContentLoaded', renderSaudacao);
 setInterval(renderSaudacao, 60 * 1000);
 
-// ===== Formulário de e-mail (popup) =====
+// ===== Formulário de e-mail (popup + Formspree) =====
 document.addEventListener('DOMContentLoaded', () => {
   const emailLinks = document.querySelectorAll('.lista-contatos a[href^="mailto:"]');
   const modal = document.getElementById('formEmail');
   const form = document.getElementById('emailForm');
   const fecharBtns = modal ? modal.querySelectorAll('[data-fechar]') : [];
   const confirmacao = document.getElementById('mensagemConfirmacao');
+  const btnEnviar = document.getElementById('btnEnviarMensagem');
 
   if (!modal || !form || emailLinks.length === 0) return;
 
   const abrirModal = () => {
     modal.classList.add('aberta');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-aberta');
+
+    if (confirmacao) {
+      confirmacao.style.display = 'none';
+      confirmacao.textContent = '';
+      confirmacao.classList.remove('sucesso', 'erro');
+    }
+
     const nome = form.querySelector('#nome');
     setTimeout(() => nome && nome.focus(), 50);
   };
 
   const fecharModal = () => {
     modal.classList.remove('aberta');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-aberta');
+
+    if (confirmacao) {
+      confirmacao.style.display = 'none';
+      confirmacao.textContent = '';
+      confirmacao.classList.remove('sucesso', 'erro');
+    }
+
+    if (btnEnviar) {
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = 'Enviar';
+    }
+  };
+
+  const mostrarMensagem = (texto, tipo) => {
+    if (!confirmacao) return;
+
+    confirmacao.textContent = texto;
+    confirmacao.classList.remove('sucesso', 'erro');
+    confirmacao.classList.add(tipo);
+    confirmacao.style.display = 'block';
   };
 
   emailLinks.forEach(a => {
@@ -119,15 +149,49 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && modal.classList.contains('aberta')) fecharModal();
   });
 
-  // Envio com confirmação temporária
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    confirmacao.style.display = 'block';
-    setTimeout(() => {
+
+    const dados = new FormData(form);
+
+    if (btnEnviar) {
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = 'Enviando...';
+    }
+
+    if (confirmacao) {
       confirmacao.style.display = 'none';
-      fecharModal();
-      form.reset();
-    }, 1800);
+      confirmacao.textContent = '';
+      confirmacao.classList.remove('sucesso', 'erro');
+    }
+
+    try {
+      const resposta = await fetch(form.action, {
+        method: form.method,
+        body: dados,
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+
+      if (resposta.ok) {
+        mostrarMensagem('Mensagem enviada com sucesso!', 'sucesso');
+
+        setTimeout(() => {
+          form.reset();
+          fecharModal();
+        }, 1800);
+      } else {
+        mostrarMensagem('Não foi possível enviar a mensagem. Tente novamente.', 'erro');
+      }
+    } catch (erro) {
+      mostrarMensagem('Erro de conexão. Verifique sua internet e tente novamente.', 'erro');
+    } finally {
+      if (btnEnviar) {
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = 'Enviar';
+      }
+    }
   });
 });
 
