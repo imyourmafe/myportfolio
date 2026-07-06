@@ -1,5 +1,5 @@
-//Controle do tema claro/escuro
-(function tema(){
+// ===== Controle do tema claro/escuro =====
+(function tema() {
   const root = document.documentElement;
   const btn = document.getElementById('toggleTema');
   const CHAVE = 'preferencia-tema';
@@ -16,29 +16,32 @@
   });
 })();
 
-//Navegação entre seções
-function ativarTelaAtual(){
-  const destino = location.hash || "#sobre";
-  document.querySelectorAll(".tela").forEach(sec => {
-    sec.classList.remove("tela--ativa");
+// ===== Navegação SPA (hash) =====
+function navegarPara(hash) {
+  const destino = hash || '#sobre';
+
+  document.querySelectorAll('.tela').forEach(sec => {
+    sec.classList.remove('tela--ativa');
   });
+
   const alvo = document.querySelector(destino);
   if (alvo) {
-    alvo.classList.add("tela--ativa");
-    alvo.scrollIntoView({behavior: "smooth", block: "start"});
+    alvo.classList.add('tela--ativa');
   }
-}
-function setActiveSection(id) {
-  document.querySelectorAll('.tela').forEach(sec => sec.classList.remove('tela--ativa'));
-  const el = document.querySelector(id);
-  if (el) el.classList.add('tela--ativa');
+
+  document.querySelectorAll('.menu-link').forEach(a => {
+    a.classList.toggle('ativo', a.getAttribute('href') === destino);
+  });
 }
 
-// Inicializa e reage às mudanças
-document.addEventListener("DOMContentLoaded", ativarTelaAtual);
-window.addEventListener("hashchange", ativarTelaAtual);
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('fade-in');
+  navegarPara(location.hash || '#sobre');
+});
 
-//Sanfona — gira o chevron quando abre/fecha
+window.addEventListener('hashchange', () => navegarPara(location.hash));
+
+// ===== Sanfona — gira o chevron quando abre/fecha =====
 document.addEventListener('toggle', (ev) => {
   if (ev.target.matches('details.projeto-accordion')) {
     const chevron = ev.target.querySelector('.chevron');
@@ -46,41 +49,38 @@ document.addEventListener('toggle', (ev) => {
   }
 }, true);
 
-// Scroll suave entre seções
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('fade-in');
-  document.querySelectorAll('a').forEach(link => {
-    const destino = link.getAttribute('href');
-    if (!destino || destino.startsWith('http') || destino.startsWith('#') || destino.startsWith('mailto:')) return;
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      document.body.classList.remove('fade-in');
-      setTimeout(() => {
-        window.location.href = destino;
-      }, 300);
-    });
-  });
-});
-
-/* Mensagem de boas-vindas*/
+// ===== Mensagem de boas-vindas =====
 function saudacaoAgora() {
   const h = new Date().getHours();
-  if (h < 12) return {msg: "Que sono, hein? Bom dia!", emoji: "☀️"};
-  if (h < 18) return {msg: "Boa tarde, hora de almoçar.", emoji: "🌤️"};
-  return {msg: "Tá tarde, né...boa noite!", emoji: "🌙"};
+  if (h < 12) {
+    return {
+      msg: "Que sono, hein? Bom dia!",
+      emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
+    };
+  }
+  if (h < 18) {
+    return {
+      msg: "Boa tarde, hora de almoçar.",
+      emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.9 10.6A4.5 4.5 0 0 0 17 18h-8.5A4.5 4.5 0 0 1 12 9c.9 0 1.7.3 2.4.9Z"/></svg>`
+    };
+  }
+  return {
+    msg: "Tá tarde, né...boa noite!",
+    emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
+  };
 }
 
 function renderSaudacao() {
-  const el = document.getElementById("boasVindas");
+  const el = document.getElementById('boasVindas');
   if (!el) return;
   const { msg, emoji } = saudacaoAgora();
-  el.textContent = `${emoji} ${msg}`;
+  el.innerHTML = `${emoji} <span>${msg}</span>`;
 }
 
-document.addEventListener("DOMContentLoaded", renderSaudacao);
+document.addEventListener('DOMContentLoaded', renderSaudacao);
 setInterval(renderSaudacao, 60 * 1000);
 
-// Abrir o formulário ao clicar no link de e-mail
+// ===== Formulário de e-mail (popup) =====
 document.addEventListener('DOMContentLoaded', () => {
   const emailLinks = document.querySelectorAll('.lista-contatos a[href^="mailto:"]');
   const modal = document.getElementById('formEmail');
@@ -96,23 +96,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const nome = form.querySelector('#nome');
     setTimeout(() => nome && nome.focus(), 50);
   };
+
   const fecharModal = () => {
     modal.classList.remove('aberta');
     document.body.classList.remove('modal-aberta');
   };
+
   emailLinks.forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
       abrirModal();
     });
   });
+
   fecharBtns.forEach(btn => btn.addEventListener('click', fecharModal));
+
   modal.addEventListener('click', (e) => {
     if (e.target.classList.contains('popup-backdrop')) fecharModal();
   });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('aberta')) fecharModal();
   });
+
   // Envio com confirmação temporária
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -125,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Filtro
+// ===== Filtros de projetos =====
 document.addEventListener('DOMContentLoaded', () => {
   const botoes = document.querySelectorAll('.filtro');
   const projetos = document.querySelectorAll('.projeto-card');
@@ -140,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       projetos.forEach(proj => {
         const cats = proj.dataset.categorias.split(',');
         if (categoria === 'todos' || cats.includes(categoria)) {
-          proj.style.display = 'block';
+          proj.style.display = '';
           proj.style.animation = 'fadeInProj 0.4s ease forwards';
         } else {
           proj.style.display = 'none';
@@ -150,10 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Injeta animação do filtro
 const estiloAnimacao = document.createElement('style');
 estiloAnimacao.textContent = `
 @keyframes fadeInProj {
   from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
 }`;
 document.head.appendChild(estiloAnimacao);
