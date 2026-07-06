@@ -31,7 +31,7 @@ O projeto foi dividido em duas fases:
 - CSS3 + Flexbox
 - JavaScript
 - Google Fonts
-- Font Awesome
+
 
 ---
 
@@ -54,4 +54,4 @@ Este projeto é de uso educacional, criado como parte da disciplina **Tecnologia
 ## 🙋‍♀️ Desenvolvido por
 **Maria Fernanda de Almeida Maneira - 214348**  
 Turma: Semestre 8
-GitHub: [https://https://github.com/imyourmafe](https://https://github.com/imyourmafe)
+GitHub: [github.com/imyourmafe](https://github.com/imyourmafe)
