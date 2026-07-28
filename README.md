@@ -37,7 +37,7 @@ O projeto foi dividido em duas fases:
 
 ## 🎨 Protótipo
 Link para o protótipo criado no Figma:  
-[🔗 Ver protótipo](https://www.figma.com/design/vkv3gTAXWuBMkedOwm9vjB/P1-de-TecWeb?node-id=11-72&t=Y3LsnnypDwKBmDWt-1) ou abrir .pdf disponibilizado
+[🔗 Ver protótipo](https://www.figma.com/design/vkv3gTAXWuBMkedOwm9vjB/P1-de-TecWeb?node-id=11-72&t=Y3LsnnypDwKBmDWt-1)
 
 ---
 
