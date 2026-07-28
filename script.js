@@ -1,3 +1,55 @@
+// ===== Renderização dos cards de projeto a partir de PROJETOS (projects.js) =====
+function renderProjetos() {
+  const grid = document.getElementById('gridProjetos');
+  if (!grid || typeof PROJETOS === 'undefined') return;
+
+  const chevronSVG = '<svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+
+  PROJETOS.forEach(projeto => {
+    const article = document.createElement('article');
+    article.className = 'projeto-card';
+    article.dataset.categorias = projeto.categorias.join(',');
+
+    const figure = document.createElement('figure');
+    figure.className = 'projeto-thumb';
+    const img = document.createElement('img');
+    img.src = projeto.imagem;
+    img.alt = projeto.alt;
+    img.width = projeto.largura;
+    img.height = projeto.altura;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    figure.appendChild(img);
+
+    const details = document.createElement('details');
+    details.className = 'projeto-accordion';
+
+    const summary = document.createElement('summary');
+    summary.className = 'projeto-info';
+    const h3 = document.createElement('h3');
+    h3.className = 'projeto-titulo';
+    h3.textContent = projeto.titulo;
+    summary.appendChild(h3);
+    summary.insertAdjacentHTML('beforeend', chevronSVG);
+
+    const descDiv = document.createElement('div');
+    descDiv.className = 'projeto-desc';
+    const descP = document.createElement('p');
+    descP.textContent = projeto.descricao;
+    descDiv.appendChild(descP);
+
+    details.appendChild(summary);
+    details.appendChild(descDiv);
+
+    article.appendChild(figure);
+    article.appendChild(details);
+
+    grid.appendChild(article);
+  });
+}
+
+renderProjetos();
+
 // ===== Controle do tema claro/escuro =====
 (function tema() {
   const root = document.documentElement;
