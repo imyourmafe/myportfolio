@@ -171,7 +171,7 @@ main{padding:30px 0; min-height:calc(100vh - 120px);}
 .tela-titulo{text-align:center; color:var(--brand); margin-bottom:20px;}
 
 /* Seção Sobre */
-#sobre{
+#sobre.tela--ativa{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -340,7 +340,7 @@ main{padding:30px 0; min-height:calc(100vh - 120px);}
 }
 
 /* Seção Contatos */
-#contato{
+#contato.tela--ativa{
   padding: 3rem 1rem 4rem;
   display: flex;
   flex-direction: column;
