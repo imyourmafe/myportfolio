@@ -50,6 +50,15 @@ html[data-theme="dark"]{
 html{
   scroll-behavior: smooth;
 }
+.sr-only{
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
 *{box-sizing:border-box; margin:0; padding:0;}
 .container{
   width: 100%;
@@ -210,7 +219,7 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   gap: 0.8rem;
   margin-top: 1rem;
 }
-.perfil-textos h1{
+.perfil-textos h2{
   margin: 0;
   font-size: 1.6rem;
 }
@@ -477,7 +486,7 @@ html[data-theme="dark"] .boas-vindas{
   animation: fadeIn .25s ease-out both;
   z-index: 1;
 }
-.popup-card h3{margin: 0 0 .4rem;}
+.popup-card h2{margin: 0 0 .4rem; font-size: 1.15rem;}
 .popup-card label{
   font-weight: 600;
   font-size: .92rem;
