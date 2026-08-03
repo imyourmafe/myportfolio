@@ -140,12 +140,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const fecharBtns = modal ? modal.querySelectorAll('[data-fechar]') : [];
   const confirmacao = document.getElementById('mensagemConfirmacao');
   const btnEnviar = document.getElementById('btnEnviarMensagem');
+  const siteHeader = document.querySelector('.site-header');
+  const siteMain = document.querySelector('main.container');
 
   if (!modal || !form || emailLinks.length === 0) return;
 
-  const abrirModal = () => {
+  let ultimoElementoFocado = null;
+
+  const abrirModal = (origem) => {
+    ultimoElementoFocado = origem || document.activeElement;
+
     modal.classList.add('aberta');
-    modal.setAttribute('aria-hidden', 'false');
+    modal.inert = false;
+    // O resto da página vira inert enquanto o modal está aberto: sem isso,
+    // Tab escapava do modal e alcançava o cabeçalho/menu por trás do
+    // backdrop, mesmo com aria-modal="true".
+    if (siteHeader) siteHeader.inert = true;
+    if (siteMain) siteMain.inert = true;
     document.body.classList.add('modal-aberta');
 
     if (confirmacao) {
@@ -160,7 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const fecharModal = () => {
     modal.classList.remove('aberta');
-    modal.setAttribute('aria-hidden', 'true');
+    modal.inert = true;
+    if (siteHeader) siteHeader.inert = false;
+    if (siteMain) siteMain.inert = false;
     document.body.classList.remove('modal-aberta');
 
     if (confirmacao) {
@@ -172,6 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnEnviar) {
       btnEnviar.disabled = false;
       btnEnviar.textContent = 'Enviar';
+    }
+
+    if (ultimoElementoFocado) {
+      ultimoElementoFocado.focus();
+      ultimoElementoFocado = null;
     }
   };
 
@@ -187,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
   emailLinks.forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      abrirModal();
+      abrirModal(a);
     });
   });
 

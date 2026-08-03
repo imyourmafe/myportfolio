@@ -38,6 +38,12 @@
   <body>
     <!-- ====== Cabeçalho ====== -->
     <header class="site-header">
+      <!-- h1 único e persistente: as seções abaixo funcionam como abas
+           (só uma fica visível por vez), então um <h1> preso dentro de
+           #sobre desaparecia da árvore de acessibilidade ao navegar para
+           Projetos/Contato. Este fica sempre presente; o título visível
+           de cada aba usa <h2>. -->
+      <h1 class="sr-only">Maria Fernanda de Almeida Maneira — Portfólio</h1>
       <nav class="nav container">
         <button id="toggleTema" class="brand" type="button" aria-label="Alterar tema">
           <!-- Sun Icon (visible in dark mode) -->
@@ -65,7 +71,7 @@
         <div class="perfil">
           <img class="perfil-foto" src="images/IMG_5417.jpg" alt="Foto de perfil" width="200" height="200" loading="eager" fetchpriority="high" decoding="async">
           <div class="perfil-textos">
-            <h1>Maria Fernanda de Almeida Maneira</h1>
+            <h2>Maria Fernanda de Almeida Maneira</h2>
             <p class="subtitulo">Desenvolvedora Front-End &amp; Designer iniciante</p>
             <p class="bio">
               Sou estudante do curso Engenharia da Computação, buscando criar interfaces web e design.
@@ -112,7 +118,7 @@
             <span class="icone" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
             </span>
-            <a href="tel:+5513991648694">(13) 99164-8694</a>
+            <a href="tel:+5513991648694">(13)&nbsp;99164&#8209;8694</a>
           </li>
           <li class="item-contato">
             <span class="icone" aria-hidden="true">
@@ -133,49 +139,58 @@
             <a href="https://canva.link/curriculo-mfmaneira">Baixar Currículo</a>
           </li>
         </ul>
-
-        <!-- Formulário de envio de mensagem -->
-        <div id="formEmail" class="popup-form" aria-hidden="true">
-          <div class="popup-backdrop" data-fechar></div>
-
-          <form 
-            id="emailForm" 
-            class="popup-card" 
-            role="dialog" 
-            aria-modal="true" 
-            aria-labelledby="formTitle"
-            action="https://formspree.io/f/mgojqabg"
-            method="POST"
-          >
-            <h3 id="formTitle">Envie uma mensagem</h3>
-
-            <label for="nome">Seu nome</label>
-            <input type="text" id="nome" name="nome" required>
-
-            <label for="email">Seu e-mail</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="assunto">Assunto</label>
-            <input type="text" id="assunto" name="assunto" required>
-
-            <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
-
-            <input type="hidden" name="_subject" value="Nova mensagem enviada pelo portfólio">
-
-            <div class="popup-actions">
-              <button type="submit" id="btnEnviarMensagem">Enviar</button>
-              <button type="button" id="fecharForm" class="link-btn" data-fechar>Cancelar</button>
-            </div>
-          </form>
-
-          <div id="mensagemConfirmacao" class="msg-confirmacao" role="status" aria-live="polite">
-            Mensagem enviada com sucesso!
-          </div>
-        </div>
       </section>
 
     </main>
+
+    <!-- Formulário de envio de mensagem: fica fora de <main> de propósito.
+         Antes vivia dentro de #contato, que some (display:none) ao trocar
+         de aba — se o modal estivesse aberto nesse momento, ele desaparecia
+         (0x0) mas continuava "aberto" e travando o scroll da página. Como
+         irmão de <header>/<main>, também permite usar inert neles enquanto
+         o modal está aberto, sem se auto-desativar. -->
+    <div
+      id="formEmail"
+      class="popup-form"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="formTitle"
+      inert
+    >
+      <div class="popup-backdrop" data-fechar></div>
+
+      <form
+        id="emailForm"
+        class="popup-card"
+        action="https://formspree.io/f/mgojqabg"
+        method="POST"
+      >
+        <h2 id="formTitle">Envie uma mensagem</h2>
+
+        <label for="nome">Seu nome</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="email">Seu e-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="assunto">Assunto</label>
+        <input type="text" id="assunto" name="assunto" required>
+
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+
+        <input type="hidden" name="_subject" value="Nova mensagem enviada pelo portfólio">
+
+        <div class="popup-actions">
+          <button type="submit" id="btnEnviarMensagem">Enviar</button>
+          <button type="button" id="fecharForm" class="link-btn" data-fechar>Cancelar</button>
+        </div>
+      </form>
+
+      <div id="mensagemConfirmacao" class="msg-confirmacao" role="status" aria-live="polite">
+        Mensagem enviada com sucesso!
+      </div>
+    </div>
 
     <footer class="site-footer">
       <small>&copy; 2025 MARIA FERNANDA MANEIRA — Desenvolvido com HTML, CSS e JavaScript</small>
