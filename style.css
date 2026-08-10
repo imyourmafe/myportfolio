@@ -276,7 +276,7 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   overflow: hidden;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
-  background: #d9d9d9;
+  background: #fbf3f1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,7 +285,10 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
 .projeto-thumb img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* As imagens já vêm com moldura/mat "assada" no arquivo (fundo consistente
+     em torno do print/foto original), então contain preserva a composição
+     inteira em vez de cortar as bordas como cover fazia antes. */
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 .projeto-thumb:hover img{
