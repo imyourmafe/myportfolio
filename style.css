@@ -241,13 +241,16 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   padding:.5rem 1rem; border-radius:20px; font-weight:800;
 }
 
-/* Seção Projetos (Sanfona) */
+/* Seção Projetos (Sanfona)
+   Layout em masonry (colunas CSS) em vez de grade de altura fixa: cada card
+   assume a proporção da própria imagem, então pôsteres verticais, prints
+   panorâmicos e fotos convivem sem corte nem redução. As imagens vêm de
+   fontes muito diferentes (Figma, Canva, foto de protótipo, Windows Forms),
+   com proporções de 0.56 a 2.00 — forçá-las numa caixa fixa cortava umas e
+   encolhia outras. */
 .grid-projetos{
-  align-items: start;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  gap: 36px;
+  column-count: 3;
+  column-gap: 32px;
   margin-top: 24px;
   padding-bottom: 40px;
   max-width: 1100px;
@@ -263,8 +266,11 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   transform: translateY(0) scale(1);
   transition: transform .25s ease, box-shadow .25s ease;
   will-change: transform;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  /* impede que um card seja partido ao meio entre duas colunas */
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 32px;
 }
 .projeto-card:hover{
   transform: translateY(-4px) scale(1.01);
@@ -272,20 +278,21 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
 }
 .projeto-thumb{
   width: 100%;
-  height: 220px;
   overflow: hidden;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
-  background: #d9d9d9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: color-mix(in oklab, var(--card) 60%, white);
+  display: block;
+  line-height: 0;
   transition: transform .35s ease, filter .35s ease;
 }
 .projeto-thumb img{
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  /* altura livre: o card acompanha a proporção real da imagem. Os atributos
+     width/height em cada <img> (vindos de projects.js) reservam o espaço
+     correto antes do download, evitando layout shift com o lazy loading. */
+  height: auto;
+  display: block;
   transition: transform 0.3s ease;
 }
 .projeto-thumb:hover img{
@@ -293,7 +300,6 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   filter: saturate(1.05);
 }
 .projeto-accordion{
-  flex: 0 0 auto;
   margin: 0;
   border: 0;
   background: transparent;
@@ -351,10 +357,11 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   background: color-mix(in oklab, var(--divisor) 65%, white);
   color: var(--text);
 }
+@media (max-width: 1000px){
+  .grid-projetos{ column-count: 2; }
+}
 @media (max-width: 700px){
-  .grid-projetos {
-    grid-template-columns: 1fr;
-  }
+  .grid-projetos{ column-count: 1; }
 }
 
 /* Seção Contatos */
