@@ -50,21 +50,179 @@ function renderProjetos() {
 
 renderProjetos();
 
-// ===== Controle do tema claro/escuro =====
-(function tema() {
+// ===== Personalização: tema e ícone do botão de início =====
+// Cada escolha é aplicada e gravada na hora — não existe botão de "aplicar".
+(function personalizacao() {
   const root = document.documentElement;
-  const btn = document.getElementById('toggleTema');
-  const CHAVE = 'preferencia-tema';
+  const CHAVE_TEMA = 'tema';
+  const CHAVE_ICONE = 'icone-inicio';
+  const CHAVE_ANTIGA = 'preferencia-tema'; // esquema anterior: 'light' | 'dark'
 
-  const atual = localStorage.getItem(CHAVE) || 'light';
-  root.setAttribute('data-theme', atual);
-  btn.setAttribute('aria-pressed', String(atual === 'dark'));
+  if (typeof TEMAS === 'undefined' || typeof ICONES_INICIO === 'undefined') return;
 
-  btn.addEventListener('click', () => {
-    const novo = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', novo);
-    localStorage.setItem(CHAVE, novo);
-    btn.setAttribute('aria-pressed', String(novo === 'dark'));
+  // localStorage pode lançar (navegação privada, cookies bloqueados). Nesse
+  // caso o site funciona normalmente, só não guarda a escolha entre visitas.
+  const armazenamento = {
+    ler(chave) {
+      try { return localStorage.getItem(chave); } catch { return null; }
+    },
+    gravar(chave, valor) {
+      try { localStorage.setItem(chave, valor); } catch { /* sem persistência */ }
+    }
+  };
+
+  const temaPadrao = TEMAS[0];
+  const iconePadrao = ICONES_INICIO[0];
+
+  const acharTema = id => TEMAS.find(t => t.id === id);
+  const acharIcone = id => ICONES_INICIO.find(i => i.id === id);
+
+  function temaSalvo() {
+    const direto = acharTema(armazenamento.ler(CHAVE_TEMA));
+    if (direto) return direto;
+    // Quem já tinha visitado o site no esquema claro/escuro mantém o
+    // equivalente mais próximo em vez de voltar ao padrão.
+    const antigo = armazenamento.ler(CHAVE_ANTIGA);
+    if (antigo === 'dark') return acharTema('meianoite') || temaPadrao;
+    if (antigo === 'light') return acharTema('rose') || temaPadrao;
+    return temaPadrao;
+  }
+
+  function aplicarTema(tema) {
+    root.setAttribute('data-tema', tema.id);
+    root.setAttribute('data-lum', tema.lum);
+    armazenamento.gravar(CHAVE_TEMA, tema.id);
+  }
+
+  function aplicarIcone(icone) {
+    const svg = document.getElementById('iconeInicio');
+    if (svg) {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', icone.d);
+      svg.replaceChildren(path);
+    }
+    armazenamento.gravar(CHAVE_ICONE, icone.id);
+  }
+
+  // --- estado inicial, antes de montar o painel ---
+  let temaAtual = temaSalvo();
+  let iconeAtual = acharIcone(armazenamento.ler(CHAVE_ICONE)) || iconePadrao;
+  aplicarTema(temaAtual);
+  aplicarIcone(iconeAtual);
+
+  // --- botão de início ---
+  const btnInicio = document.getElementById('btnInicio');
+  if (btnInicio) {
+    btnInicio.addEventListener('click', () => {
+      if (location.hash && location.hash !== '#sobre') {
+        location.hash = '#sobre';
+      } else {
+        navegarPara('#sobre');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // --- painel ---
+  const btnPainel = document.getElementById('btnPersonalizar');
+  const painel = document.getElementById('painelPersonalizar');
+  const grupoTema = document.getElementById('opcoesTema');
+  const grupoIcone = document.getElementById('opcoesIcone');
+  if (!btnPainel || !painel || !grupoTema || !grupoIcone) return;
+
+  TEMAS.forEach(tema => {
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'tema';
+    input.id = `tema-${tema.id}`;
+    input.value = tema.id;
+    input.checked = tema.id === temaAtual.id;
+
+    const label = document.createElement('label');
+    label.className = 'opcao-tema';
+    label.setAttribute('for', input.id);
+
+    const amostra = document.createElement('span');
+    amostra.className = 'amostra';
+    amostra.setAttribute('aria-hidden', 'true');
+    tema.amostra.forEach(cor => {
+      const faixa = document.createElement('span');
+      faixa.style.background = cor;
+      amostra.appendChild(faixa);
+    });
+
+    const nome = document.createElement('span');
+    nome.textContent = tema.nome;
+
+    label.append(amostra, nome);
+    input.addEventListener('change', () => {
+      temaAtual = tema;
+      aplicarTema(tema);
+    });
+    grupoTema.append(input, label);
+  });
+
+  ICONES_INICIO.forEach(icone => {
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'icone-inicio';
+    input.id = `icone-${icone.id}`;
+    input.value = icone.id;
+    input.checked = icone.id === iconeAtual.id;
+
+    const label = document.createElement('label');
+    label.className = 'opcao-icone';
+    label.setAttribute('for', input.id);
+    label.title = icone.nome;
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '20');
+    svg.setAttribute('height', '20');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2.2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', icone.d);
+    svg.appendChild(path);
+
+    // O nome fica acessível a leitor de tela sem ocupar espaço no botão.
+    const rotulo = document.createElement('span');
+    rotulo.className = 'sr-only';
+    rotulo.textContent = icone.nome;
+
+    label.append(svg, rotulo);
+    input.addEventListener('change', () => {
+      iconeAtual = icone;
+      aplicarIcone(icone);
+    });
+    grupoIcone.append(input, label);
+  });
+
+  const abrirPainel = () => {
+    painel.hidden = false;
+    btnPainel.setAttribute('aria-expanded', 'true');
+  };
+  const fecharPainel = ({ devolverFoco = false } = {}) => {
+    painel.hidden = true;
+    btnPainel.setAttribute('aria-expanded', 'false');
+    if (devolverFoco) btnPainel.focus();
+  };
+
+  btnPainel.addEventListener('click', () => {
+    painel.hidden ? abrirPainel() : fecharPainel();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !painel.hidden) fecharPainel({ devolverFoco: true });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (painel.hidden) return;
+    if (!painel.contains(e.target) && !btnPainel.contains(e.target)) fecharPainel();
   });
 })();
 

@@ -1,58 +1,98 @@
-:root{
-  /*MODO CLARO*/
-    --p1:#531222;
-    --p2:#972E48;
-    --p3:#BC6E81;
-    --p4:#F5BAC9;
-    --p5:#FFEEF2;
-  /*MODO ESCURO*/
-    --s1:#010A24;
-    --s2:#021347;
-    --s3:#021E73;
-    --s4:#67749B;
-    --s5:#E6E8EE;
+/* ===== Temas =====
+   Cada tema define o mesmo conjunto de tokens; nenhuma regra abaixo conhece
+   uma cor literal. data-lum ("claro"/"escuro") existe para as poucas regras
+   que dependem da luminosidade do tema (brilho de fundo, contorno do botão)
+   não precisarem enumerar os cinco temas.
 
-  /* mapeamento dinâmico */
-  --bg: var(--p5);
+   Todos os pares de contraste críticos de cada tema — chip, link de contato,
+   subtítulo, bio, título na barra do projeto, descrição e seta do acordeão —
+   foram verificados contra WCAG AA antes de entrar aqui. */
+
+/* Rosé — identidade original do site */
+:root,
+html[data-tema="rose"]{
+  --bg: #FFEEF2;
   --card: #f0b2cc;
-  --text: var(--p1);
+  --text: #531222;
   --muted: #5c4d53;
-  --brand: var(--p2);
-  --brand-2: var(--p4);
+  --brand: #972E48;
+  --brand-2: #F5BAC9;
+  --on-brand: #FFEEF2;
   --chip-bg: #e27d9f;
   --chip-text: #3a2b36;
-  --chev-bg:var(--p4);
-  --chev-fg:#610018;
-  /* Cor de texto sobre superfícies pintadas com --brand (barra do card de
-     projeto, botão de enviar). Antes esses dois pontos usavam var(--p5)
-     direto — um token cru da paleta rosa, que não acompanha o tema. */
-  --on-brand: var(--p5);
-  /* Fundo da descrição do projeto. Antes era --divisor misturado com branco
-     fixo: funcionava no claro e quebrava no escuro (texto claro sobre fundo
-     claro). Cada tema define esta superfície explicitamente. */
+  --chev-fg: #610018;
+  --surface-2: #F5BAC9;
+  --heading-on-bg: #972E48;
   --desc-bg: #daaabc;
 }
 
-html[data-theme="dark"]{
-  --bg: var(--s1);
+/* Matcha — sálvia e creme */
+html[data-tema="matcha"]{
+  --bg: #F2F4EA;
+  --card: #C6D6BD;
+  --text: #1E2C22;
+  --muted: #46543F;
+  --brand: #3D5C41;
+  --brand-2: #CFE0C6;
+  --on-brand: #F2F4EA;
+  --chip-bg: #A8C29C;
+  --chip-text: #1E2C22;
+  --chev-fg: #1E2C22;
+  --surface-2: #CFE0C6;
+  --heading-on-bg: #35563A;
+  --desc-bg: #DDE8D6;
+}
+
+/* Lavanda — lilás e ameixa */
+html[data-tema="lavanda"]{
+  --bg: #F4F0FB;
+  --card: #CFBEEC;
+  --text: #2C2040;
+  --muted: #4B3A63;
+  --brand: #5B3E8E;
+  --brand-2: #DCCEF2;
+  --on-brand: #F4F0FB;
+  --chip-bg: #B9A3E0;
+  --chip-text: #2C2040;
+  --chev-fg: #2C2040;
+  --surface-2: #DCCEF2;
+  --heading-on-bg: #58398C;
+  --desc-bg: #E4DAF6;
+}
+
+/* Meia-noite — azul noturno, o escuro original do site */
+html[data-tema="meianoite"]{
+  --bg: #010A24;
   --card: #061127;
-  --text: var(--s5);
+  --text: #E6E8EE;
   --muted: #bfc8ee;
-  --brand: var(--s3);
-  --brand-2: var(--s4);
-  --chip-bg:#254279;
-  --chip-text:#e9eeff;
-  --chev-bg:#e9edf5;
-  --chev-fg:#10204d;
-  --on-brand: var(--s5);
-  --desc-bg: #1b2440;
-  /* --brand-2 (#67749b) e --brand (#021e73) não têm contraste suficiente
-     com o texto que carregam dentro de .perfil/.boas-vindas e em
-     .tela-titulo sobre --bg — ver auditoria de contraste (axe-core).
-     Estes tokens cobrem só esses casos, sem alterar --brand-2 globalmente
-     (ícones, gradientes e o botão de envio continuam com o tom original). */
-  --card-contrast-bg: #3f4d79;
+  --brand: #021E73;
+  --brand-2: #67749B;
+  --on-brand: #E6E8EE;
+  --chip-bg: #254279;
+  --chip-text: #e9eeff;
+  --chev-fg: #e9eeff;
+  --surface-2: #3f4d79;
   --heading-on-bg: #9aa2bc;
+  --desc-bg: #1b2440;
+}
+
+/* Grafite — grafite com acento coral. O texto sobre a barra coral é escuro
+   de propósito: branco sobre esse coral dá só 3.3:1. */
+html[data-tema="grafite"]{
+  --bg: #15171C;
+  --card: #23262D;
+  --text: #ECEDEF;
+  --muted: #B7BCC5;
+  --brand: #E4634A;
+  --brand-2: #2E323B;
+  --on-brand: #15171C;
+  --chip-bg: #333842;
+  --chip-text: #ECEDEF;
+  --chev-fg: #ECEDEF;
+  --surface-2: #2E323B;
+  --heading-on-bg: #F0836D;
+  --desc-bg: #1E2128;
 }
 
 html{
@@ -107,7 +147,7 @@ body::before{
   50%  {transform: translate3d(0,-8px,0) scale(1.01);}
   100% {transform: translate3d(0,4px,0) scale(1);}
 }
-html[data-theme="dark"] body::before{
+html[data-lum="escuro"] body::before{
   opacity: .28;
   background:
     radial-gradient(900px 600px at 10% 20%, color-mix(in oklab, var(--brand-2) 25%, transparent) 0%, transparent 60%),
@@ -150,28 +190,12 @@ html[data-theme="dark"] body::before{
   grid-area: 1 / 1;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
 }
-html[data-theme="light"] .sun-icon {
-  opacity: 0;
-  transform: rotate(90deg) scale(0);
-}
-html[data-theme="light"] .moon-icon {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-html[data-theme="dark"] .brand {
+html[data-lum="escuro"] .brand {
   color: var(--text);
   border-color: color-mix(in oklab, var(--text) 20%, transparent);
 }
-html[data-theme="dark"] .brand:hover {
+html[data-lum="escuro"] .brand:hover {
   border-color: var(--text);
-}
-html[data-theme="dark"] .sun-icon {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-html[data-theme="dark"] .moon-icon {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0);
 }
 .menu{display:flex; list-style:none; gap:16px;}
 .menu-link{
@@ -192,8 +216,7 @@ main{padding:30px 0; min-height:calc(100vh - 120px);}
   from{ opacity: 0; transform: translateY(12px); filter: blur(3px); }
   to{ opacity: 1; transform: translateY(0); filter: blur(0); }
 }
-.tela-titulo{text-align:center; color:var(--brand); margin-bottom:20px;}
-html[data-theme="dark"] .tela-titulo{color: var(--heading-on-bg);}
+.tela-titulo{text-align:center; color:var(--heading-on-bg); margin-bottom:20px;}
 
 /* Seção Sobre */
 #sobre.tela--ativa{
@@ -208,14 +231,13 @@ html[data-theme="dark"] .tela-titulo{color: var(--heading-on-bg);}
   flex-direction:column;
   align-items:center;
   gap: 36px;
-  background:var(--brand-2);
+  background:var(--surface-2);
   border-radius:18px;
   padding: 32px;
   box-shadow:0 6px 26px rgba(0,0,0,.06);
   max-width: 900px;
   margin-inline: auto;
 }
-html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
 .perfil-foto{
   width:200px; height:200px; border-radius:100%;
   border:8px solid var(--brand-2); object-fit:cover;
@@ -441,7 +463,7 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   width: 100%;
   padding: 1.2rem 1rem;
   border-radius: 12px;
-  background: var(--brand-2);
+  background: var(--surface-2);
   color: var(--brand);
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(0,0,0,.08);
@@ -454,8 +476,8 @@ html[data-theme="dark"] .perfil{background: var(--card-contrast-bg);}
   justify-content: center;
   gap: 10px;
 }
-html[data-theme="dark"] .boas-vindas{
-  background: var(--card-contrast-bg);
+/* Nos temas escuros --brand é escuro demais para ficar sobre --surface-2. */
+html[data-lum="escuro"] .boas-vindas{
   color: var(--text);
 }
 .saudacao-icon {
@@ -641,4 +663,145 @@ body.modal-aberta{overflow: hidden;}
 .filtro.ativo::after{
   background: var(--brand);
   transform: scaleX(1);
+}
+/* ===== Painel "Personalizar" =====
+   Controle flutuante no canto: o cabeçalho fica só com o botão de início.
+   Não é um diálogo modal — é um popover, então não bloqueia o resto da
+   página; fecha com Escape, clique fora ou no próprio botão, e devolve o
+   foco a quem o abriu. */
+.personalizar{
+  position: fixed;
+  right: clamp(12px, 3vw, 28px);
+  bottom: clamp(12px, 3vw, 28px);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.personalizar-btn{
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--on-brand);
+  background: var(--brand);
+  border: 1px solid color-mix(in oklab, var(--text) 20%, transparent);
+  box-shadow: 0 6px 20px rgba(0,0,0,.22);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.personalizar-btn:hover{
+  transform: scale(1.07);
+  box-shadow: 0 10px 26px rgba(0,0,0,.28);
+}
+.personalizar-painel{
+  width: min(320px, calc(100vw - 32px));
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid color-mix(in oklab, var(--text) 18%, transparent);
+  border-radius: 16px;
+  padding: 1rem 1.1rem 1.2rem;
+  box-shadow: 0 16px 40px rgba(0,0,0,.28);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: painelEntra .18s ease-out both;
+}
+.personalizar-painel[hidden]{ display: none; }
+@keyframes painelEntra{
+  from{ opacity: 0; transform: translateY(8px) scale(.98); }
+  to{ opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce){
+  .personalizar-painel{ animation: none; }
+  .personalizar-btn{ transition: none; }
+}
+.personalizar-painel h2{
+  font-size: 1rem;
+  margin: 0;
+  color: var(--text);
+}
+.personalizar-grupo{
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.personalizar-grupo legend{
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 0;
+  margin-bottom: .2rem;
+}
+.opcoes{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* Os inputs continuam no DOM (navegação por teclado e leitor de tela vêm de
+   graça do radio nativo); só o visual é substituído pelo rótulo. */
+.opcoes input[type="radio"]{
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.opcao-tema{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: color-mix(in oklab, var(--text) 8%, transparent);
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 700;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.opcao-tema:hover{ background: color-mix(in oklab, var(--text) 14%, transparent); }
+.amostra{
+  display: inline-flex;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--text) 25%, transparent);
+}
+.amostra span{ width: 12px; height: 20px; display: block; }
+.opcoes--icones{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+.opcao-icone{
+  width: 100%;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--text);
+  border: 2px solid transparent;
+  background: color-mix(in oklab, var(--text) 8%, transparent);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.opcao-icone:hover{ background: color-mix(in oklab, var(--text) 14%, transparent); }
+/* Estado escolhido e foco de teclado ficam no rótulo, já que o input é
+   visualmente oculto. */
+.opcoes input[type="radio"]:checked + .opcao-tema,
+.opcoes input[type="radio"]:checked + .opcao-icone{
+  border-color: var(--brand);
+  background: color-mix(in oklab, var(--brand) 18%, transparent);
+}
+.opcoes input[type="radio"]:focus-visible + .opcao-tema,
+.opcoes input[type="radio"]:focus-visible + .opcao-icone{
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }
