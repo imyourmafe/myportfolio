@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" data-theme="light">
+<html lang="pt-br" data-tema="rose" data-lum="claro">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,15 +45,12 @@
            de cada aba usa <h2>. -->
       <h1 class="sr-only">Maria Fernanda de Almeida Maneira — Portfólio</h1>
       <nav class="nav container">
-        <button id="toggleTema" class="brand" type="button" aria-label="Alterar tema">
-          <!-- Sun Icon (visible in dark mode) -->
-          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-          </svg>
-          <!-- Moon Icon (visible in light mode) -->
-          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        <!-- O ícone é preenchido por script.js conforme a escolha em
+             "Personalizar"; o fallback aqui é a casa, para o botão não
+             nascer vazio se o JS não rodar. -->
+        <button id="btnInicio" class="brand" type="button" aria-label="Voltar ao início">
+          <svg id="iconeInicio" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1V9.5Z"/>
           </svg>
         </button>
         <ul class="menu">
@@ -186,11 +183,42 @@
       </div>
     </div>
 
+    <!-- Painel "Personalizar": popover flutuante, fora do cabeçalho para não
+         somar um botão à navegação. Os grupos usam radio nativo (oculto
+         visualmente) para herdar teclado e leitor de tela sem código extra. -->
+    <aside class="personalizar" aria-label="Personalizar aparência">
+      <div id="painelPersonalizar" class="personalizar-painel" role="group" aria-labelledby="tituloPersonalizar" hidden>
+        <h2 id="tituloPersonalizar">Personalizar</h2>
+
+        <fieldset class="personalizar-grupo">
+          <legend>Tema</legend>
+          <div class="opcoes" id="opcoesTema"></div>
+        </fieldset>
+
+        <fieldset class="personalizar-grupo">
+          <legend>Ícone de início</legend>
+          <div class="opcoes opcoes--icones" id="opcoesIcone"></div>
+        </fieldset>
+      </div>
+
+      <button id="btnPersonalizar" class="personalizar-btn" type="button"
+              aria-expanded="false" aria-controls="painelPersonalizar"
+              aria-label="Personalizar aparência">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 0-4H13a1.5 1.5 0 0 1 0-3h3.5A4.5 4.5 0 0 0 21 9.5C21 5.9 17 3 12 3Z"/>
+          <circle cx="7.5" cy="11" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="10.5" cy="7" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="15.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
+    </aside>
+
     <footer class="site-footer">
       <small>&copy; 2025 MARIA FERNANDA MANEIRA — Desenvolvido com HTML, CSS e JavaScript</small>
     </footer>
 
     <script src="projects.js"></script>
+    <script src="personalizacao.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
