@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br" data-theme="light">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Portfólio — Maria Fernanda</title>
-    <meta name="description" content="Portfólio de Maria Fernanda de Almeida Maneira — Desenvolvedora Front-End & Designer iniciante.">
+    <meta name="description" content="Portfólio de Maria Fernanda de Almeida Maneira — estudante de Engenharia da Computação, entre design, eletrônica e código.">
 
     <!-- Favicon -->
     <link rel="icon" href="images/meta/favicon.svg" type="image/svg+xml">
@@ -19,178 +19,175 @@
          Ajuste para a URL real assim que o site estiver publicado. -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Portfólio — Maria Fernanda">
-    <meta property="og:description" content="Portfólio de Maria Fernanda de Almeida Maneira — Desenvolvedora Front-End & Designer iniciante.">
+    <meta property="og:description" content="Portfólio de Maria Fernanda de Almeida Maneira — estudante de Engenharia da Computação, entre design, eletrônica e código.">
     <meta property="og:image" content="images/meta/og-image.jpg">
     <meta property="og:locale" content="pt_BR">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portfólio — Maria Fernanda">
-    <meta name="twitter:description" content="Portfólio de Maria Fernanda de Almeida Maneira — Desenvolvedora Front-End & Designer iniciante.">
+    <meta name="twitter:description" content="Portfólio de Maria Fernanda de Almeida Maneira — estudante de Engenharia da Computação, entre design, eletrônica e código.">
     <meta name="twitter:image" content="images/meta/og-image.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
-    <!-- ====== Cabeçalho ====== -->
-    <header class="site-header">
-      <!-- h1 único e persistente: as seções abaixo funcionam como abas
-           (só uma fica visível por vez), então um <h1> preso dentro de
-           #sobre desaparecia da árvore de acessibilidade ao navegar para
-           Projetos/Contato. Este fica sempre presente; o título visível
-           de cada aba usa <h2>. -->
-      <h1 class="sr-only">Maria Fernanda de Almeida Maneira — Portfólio</h1>
-      <nav class="nav container">
-        <button id="toggleTema" class="brand" type="button" aria-label="Alterar tema">
-          <!-- Sun Icon (visible in dark mode) -->
-          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-          </svg>
-          <!-- Moon Icon (visible in light mode) -->
-          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-          </svg>
-        </button>
-        <ul class="menu">
-          <li><a class="menu-link ativo" href="#sobre">Sobre</a></li>
-          <li><a class="menu-link" href="#projetos">Projetos</a></li>
-          <li><a class="menu-link" href="#contato">Contato</a></li>
-        </ul>
-      </nav>
+    <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="cabecalho">
+      <div class="cabecalho-linha">
+        <a class="marca" href="#topo">
+          <!-- O glifo é trocado por script.js conforme a escolha em Personalizar. -->
+          <span class="marca-icone" id="marcaIcone" aria-hidden="true"></span>
+          <span class="marca-nome">MFM</span>
+        </a>
+
+        <nav class="nav-principal" aria-label="Seções do site">
+          <a class="nav-link" href="#sobre">Sobre</a>
+          <a class="nav-link" href="#projetos">Projetos</a>
+          <a class="nav-link" href="#contato">Contato</a>
+          <button type="button" id="btnPersonalizar" class="btn-personalizar"
+                  aria-label="Personalizar tema" aria-expanded="false" aria-controls="painelPersonalizar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Painel de personalização: some do fluxo quando fechado (hidden),
+           então nada dentro dele é alcançável por teclado enquanto oculto. -->
+      <div class="painel" id="painelPersonalizar" hidden>
+        <div class="painel-linha">
+          <fieldset class="painel-grupo">
+            <legend>Tema</legend>
+            <div class="opcoes" id="opcoesTema"></div>
+          </fieldset>
+
+          <fieldset class="painel-grupo">
+            <legend>Cor de destaque</legend>
+            <div class="opcoes" id="opcoesDestaque"></div>
+          </fieldset>
+
+          <fieldset class="painel-grupo">
+            <legend>Ícone da marca</legend>
+            <div class="opcoes" id="opcoesIcone"></div>
+          </fieldset>
+        </div>
+      </div>
     </header>
 
-    <main class="container">
+    <main id="topo" class="conteudo">
+      <span id="conteudo" tabindex="-1" class="sr-only">Conteúdo principal</span>
 
-      <!-- ====== Sobre ====== -->
-      <section id="sobre" class="tela tela--ativa">
-        <div class="perfil">
-          <img class="perfil-foto" src="images/IMG_5417.jpg" alt="Foto de perfil" width="200" height="200" loading="eager" fetchpriority="high" decoding="async">
-          <div class="perfil-textos">
-            <h2>Maria Fernanda de Almeida Maneira</h2>
-            <p class="subtitulo">Desenvolvedora Front-End &amp; Designer iniciante</p>
-            <p class="bio">
-              Sou estudante do curso Engenharia da Computação, buscando criar interfaces web e design.
-            </p>
-            <ul class="chips">
-              <li class="chip">HTML</li>
-              <li class="chip">CSS</li>
-              <li class="chip">FIGMA</li>
-              <li class="chip">CANVA</li>
-              <li class="chip">CAPCUT</li>
-            </ul>
+      <section id="sobre" class="seccao-hero">
+        <div class="hero-texto">
+          <span class="sobrelinha" id="saudacao"></span>
+          <h1 class="titulo-display">Maria Fernanda<br>de Almeida Maneira</h1>
+          <p class="hero-bio">Estudante de Engenharia da Computação. Projeto interfaces web e trabalho na fronteira entre design, eletrônica e código.</p>
+          <ul class="chips" id="listaChips"></ul>
+          <div class="hero-acoes">
+            <a class="botao botao--destaque" href="#projetos">Ver projetos</a>
+            <a class="botao botao--contorno" href="#contato">Falar comigo</a>
           </div>
         </div>
-
-        <div id="boasVindas" class="boas-vindas" aria-live="polite"></div>
+        <div class="hero-foto">
+          <div class="hero-foto-fundo" aria-hidden="true"></div>
+          <img src="images/IMG_5417.jpg" alt="Maria Fernanda de Almeida Maneira" width="420" height="500" loading="eager" fetchpriority="high" decoding="async">
+        </div>
       </section>
 
-      <!-- ====== Projetos ====== -->
-      <section id="projetos" class="tela">
-        <h2 class="tela-titulo">Meus Projetos</h2>
+      <section class="faixa-numeros" aria-label="Resumo">
+        <div class="numero">
+          <span class="numero-valor">21</span>
+          <span class="numero-rotulo">projetos publicados</span>
+        </div>
+        <div class="numero">
+          <span class="numero-valor">5</span>
+          <span class="numero-rotulo">áreas de atuação</span>
+        </div>
+        <div class="numero">
+          <span class="numero-valor">2026</span>
+          <span class="numero-rotulo">ano de formação</span>
+        </div>
+      </section>
 
-        <div class="filtros-projetos">
-          <button type="button" class="filtro ativo" data-filtro="todos">Todos</button>
-          <button type="button" class="filtro" data-filtro="eletronica">Eletrônica</button>
-          <button type="button" class="filtro" data-filtro="prototipos">Protótipos</button>
-          <button type="button" class="filtro" data-filtro="design">Design</button>
-          <button type="button" class="filtro" data-filtro="programacao">Programação</button>
+      <section id="projetos" class="seccao-projetos">
+        <div class="projetos-cabecalho">
+          <h2 class="titulo-display titulo-secao">Projetos</h2>
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar projetos por categoria"></div>
+        </div>
+        <div class="grade-projetos" id="gradeProjetos"></div>
+      </section>
+
+      <section id="contato" class="seccao-contato">
+        <div class="contato-texto">
+          <h2 class="titulo-display titulo-secao">Vamos conversar</h2>
+          <p class="contato-bio">Aberta a estágios e projetos em front-end, design de interface e eletrônica.</p>
+          <ul class="lista-contatos" id="listaContatos"></ul>
         </div>
 
-        <div class="grid-projetos" id="gridProjetos"></div>
-      </section>
+        <form id="formContato" class="form-contato"
+              action="https://formspree.io/f/mgojqabg" method="POST">
+          <span class="form-rotulo">Envie uma mensagem</span>
 
-      <!-- ====== Contato ====== -->
-      <section id="contato" class="tela">
-        <h2 class="tela-titulo">Contatos</h2>
-        <ul class="lista-contatos">
-          <li class="item-contato">
-            <span class="icone" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            </span>
-            <a href="mailto:mariafernandamaneira@hotmail.com" class="link-email">mariafernandamaneira@hotmail.com</a>
-          </li>
-          <li class="item-contato">
-            <span class="icone" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-            </span>
-            <a href="https://www.linkedin.com/in/maria-fernanda-maneira" target="_blank" rel="noopener noreferrer">linkedin.com/in/maria-fernanda-maneira</a>
-          </li>
-          <li class="item-contato">
-            <span class="icone" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-            </span>
-            <a href="https://github.com/imyourmafe" target="_blank" rel="noopener noreferrer">github.com/imyourmafe</a>
-          </li>
-          <li class="item-contato">
-            <span class="icone" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            </span>
-            <a href="https://canva.link/curriculo-mfmaneira">Baixar Currículo</a>
-          </li>
-        </ul>
-      </section>
+          <!-- O campo está dentro do <label>, então não precisa de for/id pareados. -->
+          <label class="campo">Seu nome
+            <input type="text" id="nome" name="nome" required>
+          </label>
 
+          <label class="campo">Seu e-mail
+            <input type="email" id="email" name="email" required>
+          </label>
+
+          <label class="campo">Mensagem
+            <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+          </label>
+
+          <input type="hidden" name="_subject" value="Nova mensagem enviada pelo portfólio">
+
+          <button type="submit" id="btnEnviar" class="botao botao--destaque botao--largo">Enviar mensagem</button>
+          <p class="form-retorno" id="formRetorno" role="status" aria-live="polite"></p>
+        </form>
+      </section>
     </main>
 
-    <!-- Formulário de envio de mensagem: fica fora de <main> de propósito.
-         Antes vivia dentro de #contato, que some (display:none) ao trocar
-         de aba — se o modal estivesse aberto nesse momento, ele desaparecia
-         (0x0) mas continuava "aberto" e travando o scroll da página. Como
-         irmão de <header>/<main>, também permite usar inert neles enquanto
-         o modal está aberto, sem se auto-desativar. -->
-    <div
-      id="formEmail"
-      class="popup-form"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="formTitle"
-      inert
-    >
-      <div class="popup-backdrop" data-fechar></div>
+    <footer class="rodape">
+      <div class="rodape-linha">
+        <span>&copy; 2026 Maria Fernanda Maneira</span>
+        <span>HTML · CSS · JavaScript</span>
+      </div>
+    </footer>
 
-      <form
-        id="emailForm"
-        class="popup-card"
-        action="https://formspree.io/f/mgojqabg"
-        method="POST"
-      >
-        <h2 id="formTitle">Envie uma mensagem</h2>
-
-        <label for="nome">Seu nome</label>
-        <input type="text" id="nome" name="nome" required>
-
-        <label for="email">Seu e-mail</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="assunto">Assunto</label>
-        <input type="text" id="assunto" name="assunto" required>
-
-        <label for="mensagem">Mensagem</label>
-        <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
-
-        <input type="hidden" name="_subject" value="Nova mensagem enviada pelo portfólio">
-
-        <div class="popup-actions">
-          <button type="submit" id="btnEnviarMensagem">Enviar</button>
-          <button type="button" id="fecharForm" class="link-btn" data-fechar>Cancelar</button>
+    <!-- Modal de detalhe do projeto: filho direto de <body> para não depender
+         de nenhuma seção, e inert enquanto fechado. -->
+    <div class="modal" id="modalProjeto" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" inert>
+      <div class="modal-fundo" data-fechar-modal></div>
+      <div class="modal-caixa">
+        <button type="button" class="modal-fechar" data-fechar-modal aria-label="Fechar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="modal-capa" id="modalCapa" role="img"></div>
+        <div class="modal-corpo">
+          <span class="sobrelinha" id="modalCategoria"></span>
+          <!-- Texto de partida: dá nome acessível ao diálogo antes de script.js
+               trocar pelo título do projeto aberto. -->
+          <h3 class="titulo-display modal-titulo" id="modalTitulo">Detalhe do projeto</h3>
+          <p class="modal-descricao" id="modalDescricao"></p>
+          <ul class="stack" id="modalStack"></ul>
+          <!-- href/target/rel entram por script.js quando o projeto tem repositório. -->
+          <a class="botao botao--destaque modal-link" id="modalLink" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            Abrir no GitHub
+          </a>
         </div>
-      </form>
-
-      <div id="mensagemConfirmacao" class="msg-confirmacao" role="status" aria-live="polite">
-        Mensagem enviada com sucesso!
       </div>
     </div>
 
-    <footer class="site-footer">
-      <small>&copy; 2025 MARIA FERNANDA MANEIRA — Desenvolvido com HTML, CSS e JavaScript</small>
-    </footer>
-
     <script src="projects.js"></script>
+    <script src="repos.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
