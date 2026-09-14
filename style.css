@@ -12,6 +12,7 @@
   --hairline: rgba(27,26,25,.12);
   --strong-line: rgba(27,26,25,.35);
   --accent: #1B1A19;
+  --accent-text: #1B1A19;
   --on-accent: #FAFAF9;
   --header-bg: rgba(255,255,255,.72);
 
@@ -49,7 +50,7 @@ img{ max-width: 100%; }
 
 /* Foco sempre visível: o design usa muito botão redondo sem contorno. */
 :focus-visible{
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -83,7 +84,7 @@ img{ max-width: 100%; }
   letter-spacing: .18em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 @keyframes subir{ from{ opacity: 0; transform: translateY(14px);} to{ opacity: 1; transform: translateY(0);} }
@@ -137,7 +138,7 @@ img{ max-width: 100%; }
   color: var(--ink);
   cursor: pointer;
 }
-.btn-personalizar:hover{ border-color: var(--accent); color: var(--accent); }
+.btn-personalizar:hover{ border-color: var(--accent-text); color: var(--accent-text); }
 
 /* ===== Painel de personalização ===== */
 .painel{
@@ -212,13 +213,13 @@ img{ max-width: 100%; }
   color: var(--ink);
   border: 1.5px solid var(--hairline);
 }
-.opcoes input:checked + .opcao-tema{ background: var(--soft); border-color: var(--accent); }
+.opcoes input:checked + .opcao-tema{ background: var(--soft); border-color: var(--accent-text); }
 .opcoes input:checked + .opcao-destaque{ border-color: var(--ink); }
 .opcoes input:checked + .opcao-icone{ background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .opcoes input:focus-visible + .opcao-tema,
 .opcoes input:focus-visible + .opcao-destaque,
 .opcoes input:focus-visible + .opcao-icone{
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 
@@ -322,7 +323,7 @@ img{ max-width: 100%; }
   font-family: 'Instrument Serif', Georgia, serif;
   font-size: 2.2rem;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .numero-rotulo{ font-size: .78rem; letter-spacing: .06em; color: var(--muted); }
 
@@ -378,7 +379,7 @@ img{ max-width: 100%; }
 .card:hover{
   transform: translateY(-4px);
   box-shadow: 0 18px 40px rgba(0,0,0,.12);
-  border-color: var(--accent);
+  border-color: var(--accent-text);
   opacity: 1;
 }
 .card-imagem{
@@ -401,7 +402,7 @@ img{ max-width: 100%; }
   gap: 10px;
   border-bottom: 1px solid var(--hairline);
 }
-.card-repo svg{ flex: 0 0 auto; color: var(--accent); }
+.card-repo svg{ flex: 0 0 auto; color: var(--accent-text); }
 .card-repo span{
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: .72rem;
@@ -423,7 +424,7 @@ img{ max-width: 100%; }
   letter-spacing: .14em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .card-titulo{
   font-size: 1rem;
@@ -482,7 +483,7 @@ img{ max-width: 100%; }
   border: 1px solid var(--hairline);
   background: var(--surface);
 }
-.lista-contatos a:hover{ border-color: var(--accent); opacity: 1; }
+.lista-contatos a:hover{ border-color: var(--accent-text); opacity: 1; }
 .contato-icone{
   flex: 0 0 38px;
   height: 38px;
@@ -490,7 +491,7 @@ img{ max-width: 100%; }
   place-items: center;
   border-radius: 10px;
   background: var(--soft);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .contato-textos{ display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .contato-rotulo{
@@ -539,7 +540,7 @@ img{ max-width: 100%; }
 .campo textarea{ resize: vertical; }
 .form-retorno{ font-size: .82rem; font-weight: 600; }
 .form-retorno:empty{ display: none; }
-.form-retorno.sucesso{ color: var(--accent); }
+.form-retorno.sucesso{ color: var(--accent-text); }
 .form-retorno.erro{ color: #c0392b; }
 
 /* Rodapé */
