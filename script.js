@@ -1,300 +1,554 @@
-// ===== Renderização dos cards de projeto a partir de PROJETOS (projects.js) =====
-function renderProjetos() {
-  const grid = document.getElementById('gridProjetos');
-  if (!grid || typeof PROJETOS === 'undefined') return;
+// ===== Portfólio 2026 =====
+// Tudo o que é escolhível (tema, cor de destaque, ícone da marca) é aplicado
+// e gravado na hora. Os cards de projeto e de repositório vêm de projects.js
+// e repos.js e compartilham o mesmo modal de detalhe.
 
-  const chevronSVG = '<svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+// ---------- Temas ----------
+// As cores abaixo são exatamente as do protótipo. Contraste medido em todas as
+// 72 combinações (8 bases x 9 destaques): 36 passam em tudo. As que reprovam
+// estão listadas no PR — três pares concentram todas as falhas:
+//   muted sobre soft  -> 4,14-4,49:1 em Papel, Matcha, Lavanda e Âmbar
+//   #67749B (Azul acinzentado, e padrão do tema Azul) -> 4,07-4,42:1
+//   #B06A1E (Âmbar, e padrão do tema Âmbar)           -> 3,84-4,43:1
+// Escurecer cada um em ~6% resolve sem mudar a cara do tema, mas é decisão de
+// design — nada foi alterado por conta própria.
+const BASES = {
+  rosa:    { rotulo: 'Rosa',    bg: '#FFEEF2', surface: '#F9D6DF', ink: '#531222', muted: '#7A4152', soft: '#F5BAC9', hairline: 'rgba(83,18,34,.16)',    strongLine: 'rgba(83,18,34,.38)',    accent: '#972E48', onAccent: '#FFEEF2' },
+  azul:    { rotulo: 'Azul',    bg: '#010A24', surface: '#061127', ink: '#E6E8EE', muted: '#BFC8EE', soft: '#1B2440', hairline: 'rgba(230,232,238,.16)', strongLine: 'rgba(230,232,238,.42)', accent: '#67749B', onAccent: '#010A24' },
+  claro:   { rotulo: 'Claro',   bg: '#FAFAF9', surface: '#FFFFFF', ink: '#1B1A19', muted: '#6B6965', soft: '#EFEEEC', hairline: 'rgba(27,26,25,.12)',    strongLine: 'rgba(27,26,25,.35)',    accent: '#1B1A19', onAccent: '#FAFAF9' },
+  escuro:  { rotulo: 'Escuro',  bg: '#111112', surface: '#1B1B1D', ink: '#ECEBE9', muted: '#A3A19D', soft: '#26262A', hairline: 'rgba(236,235,233,.14)', strongLine: 'rgba(236,235,233,.4)',  accent: '#ECEBE9', onAccent: '#111112' },
+  papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#77695B', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
+  matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5F7057', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
+  lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6B5F84', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
+  ambar:   { rotulo: 'Âmbar',   bg: '#FBF4E9', surface: '#FFFCF7', ink: '#33220F', muted: '#7D6448', soft: '#F2E2CA', hairline: 'rgba(51,34,15,.14)',    strongLine: 'rgba(51,34,15,.35)',    accent: '#B06A1E', onAccent: '#FFFCF7' }
+};
 
-  PROJETOS.forEach(projeto => {
-    const article = document.createElement('article');
-    article.className = 'projeto-card';
-    article.dataset.categorias = projeto.categorias.join(',');
+// A primeira opção mantém o destaque próprio de cada tema.
+const DESTAQUES = [
+  { nome: 'Padrão do tema',    cor: null,      onAccent: null },
+  { nome: 'Vinho',             cor: '#972E48', onAccent: '#FFEEF2' },
+  { nome: 'Vinho escuro',      cor: '#531222', onAccent: '#FFEEF2' },
+  { nome: 'Rosa',              cor: '#D2557E', onAccent: '#2A0913' },
+  { nome: 'Azul marinho',      cor: '#021E73', onAccent: '#E6E8EE' },
+  { nome: 'Azul acinzentado',  cor: '#67749B', onAccent: '#010A24' },
+  { nome: 'Matcha',            cor: '#4A7A45', onAccent: '#F2F5EE' },
+  { nome: 'Lavanda',           cor: '#6A4BA8', onAccent: '#F5F2FA' },
+  { nome: 'Âmbar',             cor: '#B06A1E', onAccent: '#FFF9F1' }
+];
 
-    const figure = document.createElement('figure');
-    figure.className = 'projeto-thumb';
-    const img = document.createElement('img');
-    img.src = projeto.imagem;
-    img.alt = projeto.alt;
-    img.width = projeto.largura;
-    img.height = projeto.altura;
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    figure.appendChild(img);
+const FILTROS = [
+  { id: 'todos',       rotulo: 'Todos' },
+  { id: 'eletronica',  rotulo: 'Eletrônica' },
+  { id: 'prototipos',  rotulo: 'Protótipos' },
+  { id: 'design',      rotulo: 'Design' },
+  { id: 'programacao', rotulo: 'Programação' }
+];
 
-    const details = document.createElement('details');
-    details.className = 'projeto-accordion';
+const NOMES_CAT = {
+  eletronica: 'Eletrônica',
+  prototipos: 'Protótipos',
+  design: 'Design',
+  programacao: 'Programação',
+  codigo: 'Programação'
+};
 
-    const summary = document.createElement('summary');
-    summary.className = 'projeto-info';
-    const h3 = document.createElement('h3');
-    h3.className = 'projeto-titulo';
-    h3.textContent = projeto.titulo;
-    summary.appendChild(h3);
-    summary.insertAdjacentHTML('beforeend', chevronSVG);
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
-    const descDiv = document.createElement('div');
-    descDiv.className = 'projeto-desc';
-    const descP = document.createElement('p');
-    descP.textContent = projeto.descricao;
-    descDiv.appendChild(descP);
+function svgEl(atributos, filhos) {
+  const el = document.createElementNS(SVG_NS, 'svg');
+  const padrao = {
+    xmlns: SVG_NS, width: '18', height: '18', viewBox: '0 0 24 24',
+    fill: 'none', stroke: 'currentColor', 'stroke-width': '2',
+    'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true'
+  };
+  Object.entries(Object.assign({}, padrao, atributos || {})).forEach(([k, v]) => el.setAttribute(k, v));
+  (filhos || []).forEach(([tag, attrs]) => {
+    const f = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => f.setAttribute(k, v));
+    el.appendChild(f);
+  });
+  return el;
+}
 
-    details.appendChild(summary);
-    details.appendChild(descDiv);
+function glifoTexto(conteudo, familia, tamanho) {
+  const span = document.createElement('span');
+  span.textContent = conteudo;
+  span.style.fontFamily = familia;
+  span.style.fontSize = tamanho;
+  span.style.lineHeight = '1';
+  span.style.fontWeight = familia.indexOf('mono') > -1 ? '600' : '400';
+  span.style.letterSpacing = '.01em';
+  return span;
+}
 
-    article.appendChild(figure);
-    article.appendChild(details);
+const GLIFOS = {
+  monograma: () => glifoTexto('MF', "'Instrument Serif', Georgia, serif", '18px'),
+  codigo:    () => glifoTexto('</>', 'ui-monospace, SFMono-Regular, Menlo, monospace', '12px'),
+  faisca:    () => svgEl(null, [['path', { d: 'M12 3c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9Z' }]]),
+  asterisco: () => svgEl(null, [['path', { d: 'M12 4v16' }], ['path', { d: 'M4.5 8 19.5 16' }], ['path', { d: 'M19.5 8 4.5 16' }]]),
+  anel:      () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 8.5 }], ['circle', { cx: 12, cy: 12, r: 3, fill: 'currentColor', stroke: 'none' }]]),
+  hexagono:  () => svgEl(null, [['polygon', { points: '12 2.5 20.5 7.25 20.5 16.75 12 21.5 3.5 16.75 3.5 7.25' }]]),
+  losango:   () => svgEl(null, [['path', { d: 'M12 3 21 12 12 21 3 12Z' }]]),
+  ponto:     () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 6, fill: 'currentColor', stroke: 'none' }]])
+};
 
-    grid.appendChild(article);
+const ICONES_CONTATO = {
+  email:    () => svgEl(null, [['rect', { width: 20, height: 16, x: 2, y: 4, rx: 2 }], ['path', { d: 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7' }]]),
+  linkedin: () => svgEl(null, [['path', { d: 'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z' }], ['rect', { width: 4, height: 12, x: 2, y: 9 }], ['circle', { cx: 4, cy: 4, r: 2 }]]),
+  github:   () => svgEl(null, [['path', { d: 'M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4' }], ['path', { d: 'M9 18c-4.51 2-5-2-7-2' }]]),
+  download: () => svgEl(null, [['path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }], ['polyline', { points: '7 10 12 15 17 10' }], ['line', { x1: 12, x2: 12, y1: 15, y2: 3 }]])
+};
+
+const CONTATOS = [
+  { rotulo: 'E-mail',    valor: 'mariafernandamaneira@hotmail.com', href: 'mailto:mariafernandamaneira@hotmail.com', icone: 'email' },
+  { rotulo: 'LinkedIn',  valor: 'maria-fernanda-maneira',           href: 'https://www.linkedin.com/in/maria-fernanda-maneira', icone: 'linkedin' },
+  { rotulo: 'GitHub',    valor: 'github.com/imyourmafe',            href: 'https://github.com/imyourmafe', icone: 'github' },
+  { rotulo: 'Currículo', valor: 'Baixar PDF',                       href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
+];
+
+const CHIPS = ['HTML', 'CSS', 'JAVASCRIPT', 'FIGMA', 'CANVA', 'CAPCUT'];
+
+const CHAVE = 'mf-portfolio-tema';
+
+// localStorage pode lançar (navegação privada, cookies bloqueados): o site
+// continua funcionando, só não guarda a escolha entre visitas.
+const armazenamento = {
+  ler() {
+    try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch { return null; }
+  },
+  gravar(valor) {
+    try { localStorage.setItem(CHAVE, JSON.stringify(valor)); } catch { /* sem persistência */ }
+  }
+};
+
+const estado = { base: 'claro', destaque: 0, icone: 'monograma', filtro: 'todos' };
+
+function temaAtual() {
+  const b = BASES[estado.base] || BASES.claro;
+  const d = DESTAQUES[estado.destaque] || DESTAQUES[0];
+  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)' };
+  return Object.assign({}, b, {
+    accent: d.cor || b.accent,
+    onAccent: d.onAccent || b.onAccent,
+    headerBg: cabecalhosEscuros[estado.base] || 'rgba(255,255,255,.72)'
   });
 }
 
-renderProjetos();
-
-// ===== Controle do tema claro/escuro =====
-(function tema() {
-  const root = document.documentElement;
-  const btn = document.getElementById('toggleTema');
-  const CHAVE = 'preferencia-tema';
-
-  const atual = localStorage.getItem(CHAVE) || 'light';
-  root.setAttribute('data-theme', atual);
-  btn.setAttribute('aria-pressed', String(atual === 'dark'));
-
-  btn.addEventListener('click', () => {
-    const novo = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', novo);
-    localStorage.setItem(CHAVE, novo);
-    btn.setAttribute('aria-pressed', String(novo === 'dark'));
-  });
-})();
-
-// ===== Navegação SPA (hash) =====
-function navegarPara(hash) {
-  const destino = hash || '#sobre';
-
-  document.querySelectorAll('.tela').forEach(sec => {
-    sec.classList.remove('tela--ativa');
-  });
-
-  const alvo = document.querySelector(destino);
-  if (alvo) {
-    alvo.classList.add('tela--ativa');
-  }
-
-  document.querySelectorAll('.menu-link').forEach(a => {
-    a.classList.toggle('ativo', a.getAttribute('href') === destino);
-  });
+function aplicarTema() {
+  const t = temaAtual();
+  const raiz = document.documentElement;
+  raiz.style.setProperty('--bg', t.bg);
+  raiz.style.setProperty('--surface', t.surface);
+  raiz.style.setProperty('--ink', t.ink);
+  raiz.style.setProperty('--muted', t.muted);
+  raiz.style.setProperty('--soft', t.soft);
+  raiz.style.setProperty('--hairline', t.hairline);
+  raiz.style.setProperty('--strong-line', t.strongLine);
+  raiz.style.setProperty('--accent', t.accent);
+  raiz.style.setProperty('--on-accent', t.onAccent);
+  raiz.style.setProperty('--header-bg', t.headerBg);
+  raiz.dataset.tema = estado.base;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('fade-in');
-  navegarPara(location.hash || '#sobre');
-});
+function salvar(patch) {
+  Object.assign(estado, patch);
+  aplicarTema();
+  armazenamento.gravar({ base: estado.base, destaque: estado.destaque, icone: estado.icone });
+}
 
-window.addEventListener('hashchange', () => navegarPara(location.hash));
+function aplicarIcone() {
+  const alvo = document.getElementById('marcaIcone');
+  if (!alvo) return;
+  const fabrica = GLIFOS[estado.icone] || GLIFOS.monograma;
+  alvo.replaceChildren(fabrica());
+}
 
-// ===== Sanfona — gira o chevron quando abre/fecha =====
-document.addEventListener('toggle', (ev) => {
-  if (ev.target.matches('details.projeto-accordion')) {
-    const chevron = ev.target.querySelector('.chevron');
-    if (chevron) chevron.classList.toggle('aberto', ev.target.open);
-  }
-}, true);
+// ---------- Utilidades ----------
+function resumir(texto) {
+  const corte = texto.indexOf('. ');
+  const frase = corte > 40 ? texto.slice(0, corte + 1) : texto;
+  return frase.length > 170 ? frase.slice(0, 167).trim() + '…' : frase;
+}
 
-// ===== Mensagem de boas-vindas =====
 function saudacaoAgora() {
   const h = new Date().getHours();
-  if (h < 12) {
-    return {
-      msg: "Que sono, hein? Bom dia!",
-      emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
-    };
-  }
-  if (h < 18) {
-    return {
-      msg: "Boa tarde, hora de almoçar.",
-      emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41"/><path d="M15.9 10.6A4.5 4.5 0 0 0 17 18h-8.5A4.5 4.5 0 0 1 12 9c.9 0 1.7.3 2.4.9Z"/></svg>`
-    };
-  }
-  return {
-    msg: "Tá tarde, né...boa noite!",
-    emoji: `<svg class="saudacao-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
-  };
+  if (h < 12) return 'Bom dia — bem-vindo(a)';
+  if (h < 18) return 'Boa tarde — bem-vindo(a)';
+  return 'Boa noite — bem-vindo(a)';
 }
 
-function renderSaudacao() {
-  const el = document.getElementById('boasVindas');
-  if (!el) return;
-  const { msg, emoji } = saudacaoAgora();
-  el.innerHTML = `${emoji} <span>${msg}</span>`;
+// ---------- Itens da grade ----------
+function todosOsItens() {
+  const repos = typeof REPOS !== 'undefined' ? REPOS : [];
+  const projetos = typeof PROJETOS !== 'undefined' ? PROJETOS : [];
+  return repos.concat(projetos);
 }
 
-document.addEventListener('DOMContentLoaded', renderSaudacao);
-setInterval(renderSaudacao, 60 * 1000);
+function combinaFiltro(item, filtro) {
+  if (filtro === 'todos') return true;
+  if (item.categorias.includes(filtro)) return true;
+  return filtro === 'programacao' && item.categorias.includes('codigo');
+}
 
-// ===== Formulário de e-mail (popup + Formspree) =====
-document.addEventListener('DOMContentLoaded', () => {
-  const emailLinks = document.querySelectorAll('.lista-contatos a[href^="mailto:"]');
-  const modal = document.getElementById('formEmail');
-  const form = document.getElementById('emailForm');
-  const fecharBtns = modal ? modal.querySelectorAll('[data-fechar]') : [];
-  const confirmacao = document.getElementById('mensagemConfirmacao');
-  const btnEnviar = document.getElementById('btnEnviarMensagem');
-  const siteHeader = document.querySelector('.site-header');
-  const siteMain = document.querySelector('main.container');
+function montarCard(item) {
+  const ehCodigo = item.tipo === 'codigo';
 
-  if (!modal || !form || emailLinks.length === 0) return;
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', 'Ver detalhes de ' + item.titulo);
 
-  let ultimoElementoFocado = null;
+  if (ehCodigo) {
+    const faixa = document.createElement('div');
+    faixa.className = 'card-repo';
+    const marcaGit = ICONES_CONTATO.github();
+    marcaGit.setAttribute('width', '17');
+    marcaGit.setAttribute('height', '17');
+    faixa.append(marcaGit, Object.assign(document.createElement('span'), { textContent: item.repo }));
+    card.appendChild(faixa);
+  } else {
+    const moldura = document.createElement('div');
+    moldura.className = 'card-imagem';
+    const img = document.createElement('img');
+    img.src = item.imagem;
+    img.alt = item.alt || '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    if (item.largura) img.width = item.largura;
+    if (item.altura) img.height = item.altura;
+    moldura.appendChild(img);
+    card.appendChild(moldura);
+  }
 
-  const abrirModal = (origem) => {
-    ultimoElementoFocado = origem || document.activeElement;
+  const corpo = document.createElement('div');
+  corpo.className = 'card-corpo';
 
-    modal.classList.add('aberta');
-    modal.inert = false;
-    // O resto da página vira inert enquanto o modal está aberto: sem isso,
-    // Tab escapava do modal e alcançava o cabeçalho/menu por trás do
-    // backdrop, mesmo com aria-modal="true".
-    if (siteHeader) siteHeader.inert = true;
-    if (siteMain) siteMain.inert = true;
-    document.body.classList.add('modal-aberta');
+  const categoria = document.createElement('span');
+  categoria.className = 'card-categoria';
+  categoria.textContent = NOMES_CAT[item.categorias[0]] || '';
 
-    if (confirmacao) {
-      confirmacao.style.display = 'none';
-      confirmacao.textContent = '';
-      confirmacao.classList.remove('sucesso', 'erro');
+  const titulo = document.createElement('h3');
+  titulo.className = 'card-titulo';
+  titulo.textContent = item.titulo;
+
+  const resumo = document.createElement('p');
+  resumo.className = 'card-resumo';
+  resumo.textContent = resumir(item.descricao);
+
+  const stack = document.createElement('ul');
+  stack.className = 'stack';
+  (item.stack || []).forEach(s => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    stack.appendChild(li);
+  });
+
+  const ver = document.createElement('span');
+  ver.className = 'card-ver';
+  ver.append('Ver detalhes', svgEl({ width: '14', height: '14', 'stroke-width': '2.5' }, [['path', { d: 'M5 12h14' }], ['path', { d: 'm12 5 7 7-7 7' }]]));
+
+  corpo.append(categoria, titulo, resumo, stack, ver);
+  card.appendChild(corpo);
+
+  const abrir = () => abrirModal(item);
+  card.addEventListener('click', abrir);
+  card.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      abrir();
     }
+  });
 
-    const nome = form.querySelector('#nome');
-    setTimeout(() => nome && nome.focus(), 50);
-  };
+  return card;
+}
 
-  const fecharModal = () => {
-    modal.classList.remove('aberta');
-    modal.inert = true;
-    if (siteHeader) siteHeader.inert = false;
-    if (siteMain) siteMain.inert = false;
-    document.body.classList.remove('modal-aberta');
+function renderGrade() {
+  const grade = document.getElementById('gradeProjetos');
+  if (!grade) return;
+  const itens = todosOsItens().filter(i => combinaFiltro(i, estado.filtro));
+  grade.replaceChildren(...itens.map(montarCard));
+}
 
-    if (confirmacao) {
-      confirmacao.style.display = 'none';
-      confirmacao.textContent = '';
-      confirmacao.classList.remove('sucesso', 'erro');
+// ---------- Modal ----------
+let ultimoFocado = null;
+
+function abrirModal(item) {
+  const modal = document.getElementById('modalProjeto');
+  if (!modal) return;
+  ultimoFocado = document.activeElement;
+
+  const capa = document.getElementById('modalCapa');
+  const ehCodigo = item.tipo === 'codigo';
+  if (!ehCodigo && item.imagem) {
+    capa.hidden = false;
+    capa.style.backgroundImage = 'url("' + encodeURI(item.imagem) + '")';
+    capa.setAttribute('aria-label', item.alt || item.titulo);
+  } else {
+    capa.hidden = true;
+    capa.style.backgroundImage = '';
+    capa.removeAttribute('aria-label');
+  }
+
+  document.getElementById('modalCategoria').textContent = NOMES_CAT[item.categorias[0]] || '';
+  document.getElementById('modalTitulo').textContent = item.titulo;
+  document.getElementById('modalDescricao').textContent = item.descricao;
+
+  const stack = document.getElementById('modalStack');
+  stack.replaceChildren(...(item.stack || []).map(s => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    return li;
+  }));
+
+  // target/rel só existem junto com href — sem isso o HTML estático fica
+  // inválido, porque o <a> nasce sem destino.
+  const link = document.getElementById('modalLink');
+  if (item.url) {
+    link.hidden = false;
+    link.href = item.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+  } else {
+    link.hidden = true;
+    link.removeAttribute('href');
+    link.removeAttribute('target');
+    link.removeAttribute('rel');
+  }
+
+  modal.classList.add('aberto');
+  modal.inert = false;
+  // O resto da página vira inert: sem isso o Tab escapa do modal e alcança
+  // o cabeçalho e os cards por trás do fundo escurecido.
+  document.querySelectorAll('body > *:not(#modalProjeto)').forEach(el => { el.inert = true; });
+  document.body.classList.add('modal-aberto');
+  modal.querySelector('.modal-fechar').focus();
+}
+
+function fecharModal() {
+  const modal = document.getElementById('modalProjeto');
+  if (!modal || !modal.classList.contains('aberto')) return;
+  modal.classList.remove('aberto');
+  modal.inert = true;
+  document.querySelectorAll('body > *:not(#modalProjeto)').forEach(el => { el.inert = false; });
+  document.body.classList.remove('modal-aberto');
+  if (ultimoFocado) {
+    ultimoFocado.focus();
+    ultimoFocado = null;
+  }
+}
+
+// ---------- Painel de personalização ----------
+function opcaoRadio(grupo, id, marcado, aoEscolher, montarRotulo) {
+  const input = document.createElement('input');
+  input.type = 'radio';
+  input.name = grupo;
+  input.id = grupo + '-' + id;
+  input.checked = marcado;
+  input.addEventListener('change', aoEscolher);
+
+  const label = document.createElement('label');
+  label.setAttribute('for', input.id);
+  montarRotulo(label);
+
+  return [input, label];
+}
+
+function renderPainel() {
+  const grupoTema = document.getElementById('opcoesTema');
+  const grupoDestaque = document.getElementById('opcoesDestaque');
+  const grupoIcone = document.getElementById('opcoesIcone');
+  if (!grupoTema || !grupoDestaque || !grupoIcone) return;
+
+  grupoTema.replaceChildren(...Object.keys(BASES).flatMap(k => opcaoRadio(
+    'tema', k, estado.base === k,
+    () => { salvar({ base: k }); renderPainel(); },
+    (label) => {
+      label.className = 'opcao-tema';
+      const amostra = document.createElement('span');
+      amostra.className = 'opcao-tema-amostra';
+      amostra.setAttribute('aria-hidden', 'true');
+      amostra.style.background = 'linear-gradient(135deg, ' + BASES[k].bg + ' 0 50%, ' + BASES[k].accent + ' 50% 100%)';
+      label.append(amostra, document.createTextNode(BASES[k].rotulo));
     }
+  )));
 
-    if (btnEnviar) {
-      btnEnviar.disabled = false;
-      btnEnviar.textContent = 'Enviar';
+  grupoDestaque.replaceChildren(...DESTAQUES.flatMap((d, i) => opcaoRadio(
+    'destaque', String(i), estado.destaque === i,
+    () => { salvar({ destaque: i }); renderPainel(); },
+    (label) => {
+      label.className = 'opcao-destaque';
+      label.title = d.nome;
+      label.style.background = d.cor ||
+        ('repeating-linear-gradient(45deg, ' + BASES[estado.base].soft + ' 0 5px, ' + BASES[estado.base].accent + ' 5px 10px)');
+      const nome = document.createElement('span');
+      nome.className = 'sr-only';
+      nome.textContent = d.nome;
+      label.appendChild(nome);
     }
+  )));
 
-    if (ultimoElementoFocado) {
-      ultimoElementoFocado.focus();
-      ultimoElementoFocado = null;
+  grupoIcone.replaceChildren(...Object.keys(GLIFOS).flatMap(k => opcaoRadio(
+    'icone', k, estado.icone === k,
+    () => { salvar({ icone: k }); aplicarIcone(); renderPainel(); },
+    (label) => {
+      label.className = 'opcao-icone';
+      label.title = k;
+      const nome = document.createElement('span');
+      nome.className = 'sr-only';
+      nome.textContent = k;
+      label.append(GLIFOS[k](), nome);
     }
-  };
+  )));
+}
 
-  const mostrarMensagem = (texto, tipo) => {
-    if (!confirmacao) return;
-
-    confirmacao.textContent = texto;
-    confirmacao.classList.remove('sucesso', 'erro');
-    confirmacao.classList.add(tipo);
-    confirmacao.style.display = 'block';
-  };
-
-  emailLinks.forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      abrirModal(a);
+function renderFiltros() {
+  const caixa = document.getElementById('filtros');
+  if (!caixa) return;
+  caixa.replaceChildren(...FILTROS.map(f => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'filtro';
+    btn.textContent = f.rotulo;
+    btn.setAttribute('aria-pressed', String(estado.filtro === f.id));
+    btn.addEventListener('click', () => {
+      estado.filtro = f.id;
+      renderFiltros();
+      renderGrade();
     });
-  });
+    return btn;
+  }));
+}
 
-  fecharBtns.forEach(btn => btn.addEventListener('click', fecharModal));
+function renderChips() {
+  const lista = document.getElementById('listaChips');
+  if (!lista) return;
+  lista.replaceChildren(...CHIPS.map(c => {
+    const li = document.createElement('li');
+    li.textContent = c;
+    return li;
+  }));
+}
 
-  modal.addEventListener('click', (e) => {
-    if (e.target.classList.contains('popup-backdrop')) fecharModal();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('aberta')) fecharModal();
-  });
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const dados = new FormData(form);
-
-    if (btnEnviar) {
-      btnEnviar.disabled = true;
-      btnEnviar.textContent = 'Enviando...';
+function renderContatos() {
+  const lista = document.getElementById('listaContatos');
+  if (!lista) return;
+  lista.replaceChildren(...CONTATOS.map(c => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = c.href;
+    if (c.href.startsWith('http')) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
     }
 
-    if (confirmacao) {
-      confirmacao.style.display = 'none';
-      confirmacao.textContent = '';
-      confirmacao.classList.remove('sucesso', 'erro');
-    }
+    const icone = document.createElement('span');
+    icone.className = 'contato-icone';
+    icone.setAttribute('aria-hidden', 'true');
+    icone.appendChild(ICONES_CONTATO[c.icone]());
+
+    const textos = document.createElement('span');
+    textos.className = 'contato-textos';
+    const rotulo = document.createElement('span');
+    rotulo.className = 'contato-rotulo';
+    rotulo.textContent = c.rotulo;
+    const valor = document.createElement('span');
+    valor.className = 'contato-valor';
+    valor.textContent = c.valor;
+    textos.append(rotulo, valor);
+
+    a.append(icone, textos);
+    li.appendChild(a);
+    return li;
+  }));
+}
+
+// ---------- Formulário ----------
+// O protótipo só simulava o envio; aqui o formulário continua postando no
+// Formspree, como no site publicado.
+function ligarFormulario() {
+  const form = document.getElementById('formContato');
+  const botao = document.getElementById('btnEnviar');
+  const retorno = document.getElementById('formRetorno');
+  if (!form || !botao || !retorno) return;
+
+  const mostrar = (texto, tipo) => {
+    retorno.textContent = texto;
+    retorno.className = 'form-retorno ' + tipo;
+  };
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    botao.disabled = true;
+    botao.textContent = 'Enviando…';
+    retorno.textContent = '';
+    retorno.className = 'form-retorno';
 
     try {
       const resposta = await fetch(form.action, {
         method: form.method,
-        body: dados,
-        headers: {
-          Accept: 'application/json'
-        }
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
       });
-
       if (resposta.ok) {
-        mostrarMensagem('Mensagem enviada com sucesso!', 'sucesso');
-
-        setTimeout(() => {
-          form.reset();
-          fecharModal();
-        }, 1800);
+        form.reset();
+        botao.textContent = 'Enviado';
+        mostrar('Mensagem enviada com sucesso.', 'sucesso');
       } else {
-        mostrarMensagem('Não foi possível enviar a mensagem. Tente novamente.', 'erro');
+        botao.textContent = 'Enviar mensagem';
+        mostrar('Não foi possível enviar. Tente novamente.', 'erro');
       }
-    } catch (erro) {
-      mostrarMensagem('Erro de conexão. Verifique sua internet e tente novamente.', 'erro');
+    } catch {
+      botao.textContent = 'Enviar mensagem';
+      mostrar('Erro de conexão. Verifique sua internet e tente novamente.', 'erro');
     } finally {
-      if (btnEnviar) {
-        btnEnviar.disabled = false;
-        btnEnviar.textContent = 'Enviar';
-      }
+      botao.disabled = false;
     }
   });
-});
+}
 
-// ===== Filtros de projetos =====
-document.addEventListener('DOMContentLoaded', () => {
-  const botoes = document.querySelectorAll('.filtro');
-  const projetos = document.querySelectorAll('.projeto-card');
+// ---------- Início ----------
+(function iniciar() {
+  const salvo = armazenamento.ler();
+  if (salvo) {
+    if (BASES[salvo.base]) estado.base = salvo.base;
+    if (DESTAQUES[salvo.destaque]) estado.destaque = salvo.destaque;
+    if (GLIFOS[salvo.icone]) estado.icone = salvo.icone;
+  }
 
-  if (botoes.length === 0 || projetos.length === 0) return;
+  aplicarTema();
+  aplicarIcone();
+  renderChips();
+  renderContatos();
+  renderFiltros();
+  renderGrade();
+  renderPainel();
+  ligarFormulario();
 
-  botoes.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const categoria = botao.dataset.filtro;
-      botoes.forEach(b => b.classList.remove('ativo'));
-      botao.classList.add('ativo');
-      projetos.forEach(proj => {
-        const cats = proj.dataset.categorias.split(',');
-        if (categoria === 'todos' || cats.includes(categoria)) {
-          proj.style.display = '';
-          proj.style.animation = 'fadeInProj 0.4s ease forwards';
-        } else {
-          proj.style.display = 'none';
-        }
-      });
+  const saudacao = document.getElementById('saudacao');
+  if (saudacao) saudacao.textContent = saudacaoAgora();
+
+  const btnPainel = document.getElementById('btnPersonalizar');
+  const painel = document.getElementById('painelPersonalizar');
+  if (btnPainel && painel) {
+    btnPainel.addEventListener('click', () => {
+      const abrindo = painel.hidden;
+      painel.hidden = !abrindo;
+      btnPainel.setAttribute('aria-expanded', String(abrindo));
     });
-  });
-});
+  }
 
-// Injeta animação do filtro
-const estiloAnimacao = document.createElement('style');
-estiloAnimacao.textContent = `
-@keyframes fadeInProj {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
-}`;
-document.head.appendChild(estiloAnimacao);
+  document.querySelectorAll('[data-fechar-modal]').forEach(el => {
+    el.addEventListener('click', fecharModal);
+  });
+
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'Escape') return;
+    fecharModal();
+    if (painel && !painel.hidden) {
+      painel.hidden = true;
+      btnPainel.setAttribute('aria-expanded', 'false');
+      btnPainel.focus();
+    }
+  });
+})();
