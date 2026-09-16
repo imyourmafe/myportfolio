@@ -6,16 +6,16 @@ const REPOS = [
   {
     tipo: "codigo",
     repo: "fabriciosuzart/AcademAI",
-    url: "https://github.com/fabriciosuzart/AcademAI",
+    links: [{ tipo: "repo", url: "https://github.com/fabriciosuzart/AcademAI" }],
     titulo: "AcademAI — assistente virtual acadêmica",
     categorias: ["codigo", "prototipos"],
     stack: ["React 19", "TypeScript", "Vite", "React Router", "Axios"],
-    descricao: "Aplicação web do TCC, com o intuito de criar uma assistente virtual. O front-end é construído em React 19 com TypeScript sobre Vite, usando React Router para navegação, Axios para consumo de API e ícones Lucide. O projeto é a continuação em código do protótipo SmartLab desenhado no Figma."
+    descricao: "A outra metade do SmartLab: o protótipo do TCC virando código. Front-end em React 19 com TypeScript sobre Vite, React Router para navegação e Axios para consumo de API. Dá para abrir o protótipo no Figma e este repositório lado a lado e ver o que mudou entre desenhar e construir."
   },
   {
     tipo: "codigo",
     repo: "GestaoProjetos2026/crm-leads",
-    url: "https://github.com/GestaoProjetos2026/crm-leads",
+    links: [{ tipo: "repo", url: "https://github.com/GestaoProjetos2026/crm-leads" }],
     titulo: "CRM Leads — automação de marketing",
     categorias: ["codigo", "programacao"],
     stack: ["Node.js", "Docker", "PostgreSQL", "Redis", "GitHub Actions"],
@@ -23,17 +23,8 @@ const REPOS = [
   },
   {
     tipo: "codigo",
-    repo: "tysper/universidade_unisanta_gigantes_de_mdf",
-    url: "https://github.com/tysper/universidade_unisanta_gigantes_de_mdf",
-    titulo: "Gigantes de MDF — robô ATMega328",
-    categorias: ["codigo", "programacao"],
-    stack: ["C", "ATMega328(p)", "PWM", "Timers", "Doxygen"],
-    descricao: "Robô funcional desenvolvido na disciplina de Programação de Hardware: movimentação por motores controlados via PWM, \"arma laser\" acionada por temporizadores, detecção por sensores e lógica de controle escrita sem bibliotecas prontas. O código é documentado com Doxygen e versionado no GitHub."
-  },
-  {
-    tipo: "codigo",
     repo: "Tec-SCTV/Diagramas",
-    url: "https://github.com/Tec-SCTV/Diagramas",
+    links: [{ tipo: "repo", url: "https://github.com/Tec-SCTV/Diagramas" }],
     titulo: "Diagramas — setor técnico SCTV",
     categorias: ["codigo", "design"],
     stack: ["Documentação técnica", "Diagramas"],
