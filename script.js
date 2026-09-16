@@ -4,23 +4,31 @@
 // e repos.js e compartilham o mesmo modal de detalhe.
 
 // ---------- Temas ----------
-// As cores abaixo são exatamente as do protótipo. Contraste medido em todas as
-// 72 combinações (8 bases x 9 destaques): 36 passam em tudo. As que reprovam
-// estão listadas no PR — três pares concentram todas as falhas:
-//   muted sobre soft  -> 4,14-4,49:1 em Papel, Matcha, Lavanda e Âmbar
-//   #67749B (Azul acinzentado, e padrão do tema Azul) -> 4,07-4,42:1
-//   #B06A1E (Âmbar, e padrão do tema Âmbar)           -> 3,84-4,43:1
-// Escurecer cada um em ~6% resolve sem mudar a cara do tema, mas é decisão de
-// design — nada foi alterado por conta própria.
+// O destaque tem dois papéis, e eles pedem coisas opostas:
+//
+//   preenchimento  fundo de botão, ladrilho da marca, filtro ativo.
+//                  Aqui vale a cor da paleta, exatamente como desenhada.
+//   texto          .sobrelinha, .card-categoria, ícones, contorno de foco.
+//                  Aqui a cor precisa vencer o fundo do tema por 4,5:1.
+//
+// Uma cor só não dá conta dos dois em temas claros e escuros ao mesmo tempo:
+// para passar sobre #F9D6DF (o card do tema Rosa) a luminância tem que ficar
+// abaixo de 0,125, e para passar sobre #1B1B1D (o card do tema Escuro) tem que
+// ficar acima de 0,225. Não existe interseção.
+//
+// Então --accent guarda a cor da paleta e --accent-text guarda a versão
+// legível dela, derivada por destaqueLegivel(): mesmo matiz, mesma saturação,
+// só a luminosidade anda até passar. Em 36 das 72 combinações a cor já passa e
+// nada é derivado. Ver verificarContraste() no fim do arquivo.
 const BASES = {
   rosa:    { rotulo: 'Rosa',    bg: '#FFEEF2', surface: '#F9D6DF', ink: '#531222', muted: '#7A4152', soft: '#F5BAC9', hairline: 'rgba(83,18,34,.16)',    strongLine: 'rgba(83,18,34,.38)',    accent: '#972E48', onAccent: '#FFEEF2' },
   azul:    { rotulo: 'Azul',    bg: '#010A24', surface: '#061127', ink: '#E6E8EE', muted: '#BFC8EE', soft: '#1B2440', hairline: 'rgba(230,232,238,.16)', strongLine: 'rgba(230,232,238,.42)', accent: '#67749B', onAccent: '#010A24' },
   claro:   { rotulo: 'Claro',   bg: '#FAFAF9', surface: '#FFFFFF', ink: '#1B1A19', muted: '#6B6965', soft: '#EFEEEC', hairline: 'rgba(27,26,25,.12)',    strongLine: 'rgba(27,26,25,.35)',    accent: '#1B1A19', onAccent: '#FAFAF9' },
   escuro:  { rotulo: 'Escuro',  bg: '#111112', surface: '#1B1B1D', ink: '#ECEBE9', muted: '#A3A19D', soft: '#26262A', hairline: 'rgba(236,235,233,.14)', strongLine: 'rgba(236,235,233,.4)',  accent: '#ECEBE9', onAccent: '#111112' },
-  papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#77695B', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
-  matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5F7057', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
-  lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6B5F84', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
-  ambar:   { rotulo: 'Âmbar',   bg: '#FBF4E9', surface: '#FFFCF7', ink: '#33220F', muted: '#7D6448', soft: '#F2E2CA', hairline: 'rgba(51,34,15,.14)',    strongLine: 'rgba(51,34,15,.35)',    accent: '#B06A1E', onAccent: '#FFFCF7' }
+  papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#706356', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
+  matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5B6C54', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
+  lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6A5F83', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
+  ambar:   { rotulo: 'Âmbar',   bg: '#FBF4E9', surface: '#FFFCF7', ink: '#33220F', muted: '#7A6246', soft: '#F2E2CA', hairline: 'rgba(51,34,15,.14)',    strongLine: 'rgba(51,34,15,.35)',    accent: '#B06A1E', onAccent: '#FFFCF7' }
 };
 
 // A primeira opção mantém o destaque próprio de cada tema.
@@ -51,6 +59,85 @@ const NOMES_CAT = {
   programacao: 'Programação',
   codigo: 'Programação'
 };
+
+// ---------- Cor: contraste e derivação ----------
+function hexParaRgb(cor) {
+  let h = cor.replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+}
+
+function rgbParaHex(rgb) {
+  return '#' + rgb.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0').toUpperCase()).join('');
+}
+
+// Luminância relativa da WCAG 2.1.
+function luminancia(cor) {
+  const c = hexParaRgb(cor).map(v => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+function contraste(a, b) {
+  const x = luminancia(a), y = luminancia(b);
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+
+function paraHsl(cor) {
+  const [r, g, b] = hexParaRgb(cor).map(v => v / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2;
+  let h = 0, s = 0;
+  if (mx !== mn) {
+    const d = mx - mn;
+    s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+    h = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? ((b - r) / d + 2) : ((r - g) / d + 4);
+    h /= 6;
+  }
+  return [h, s, l];
+}
+
+function deHsl(h, s, l) {
+  if (s === 0) { const v = l * 255; return rgbParaHex([v, v, v]); }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const f = t => {
+    t = (t + 1) % 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 0.5) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  return rgbParaHex([f(h + 1 / 3) * 255, f(h) * 255, f(h - 1 / 3) * 255]);
+}
+
+// Versão do destaque que serve de TEXTO sobre os fundos deste tema.
+// Mantém matiz e saturação e move só a luminosidade, em passos de 0,5%, até
+// alcançar 4,5:1 sobre bg e surface e 3:1 sobre soft (onde só há ícone).
+// Se a cor da paleta já passa, ela volta intacta.
+function destaqueLegivel(accent, bg, surface, soft) {
+  const passa = c => contraste(c, bg) >= 4.5 && contraste(c, surface) >= 4.5 && contraste(c, soft) >= 3;
+  if (passa(accent)) return accent;
+  const [h, s, l0] = paraHsl(accent);
+  const temaClaro = luminancia(bg) > 0.35;
+  for (let i = 1; i <= 200; i++) {
+    const l = temaClaro ? l0 - i / 200 : l0 + i / 200;
+    if (l < 0 || l > 1) break;
+    const c = deHsl(h, s, l);
+    if (passa(c)) return c;
+  }
+  return temaClaro ? '#000000' : '#FFFFFF';
+}
+
+// Cor do texto EM CIMA do destaque preenchido (botão, ladrilho da marca,
+// filtro ativo). Respeita a escolha da paleta quando ela alcança 4,5:1; se não,
+// vai para o extremo que tiver mais contraste.
+function sobreDestaque(accent, preferida) {
+  if (preferida && contraste(preferida, accent) >= 4.5) return preferida;
+  const claro = '#FFFFFF', escuro = '#0B0B0C';
+  return contraste(escuro, accent) >= contraste(claro, accent) ? escuro : claro;
+}
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -127,9 +214,11 @@ function temaAtual() {
   const b = BASES[estado.base] || BASES.claro;
   const d = DESTAQUES[estado.destaque] || DESTAQUES[0];
   const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)' };
+  const accent = d.cor || b.accent;
   return Object.assign({}, b, {
-    accent: d.cor || b.accent,
-    onAccent: d.onAccent || b.onAccent,
+    accent: accent,
+    accentTexto: destaqueLegivel(accent, b.bg, b.surface, b.soft),
+    onAccent: sobreDestaque(accent, d.onAccent || b.onAccent),
     headerBg: cabecalhosEscuros[estado.base] || 'rgba(255,255,255,.72)'
   });
 }
@@ -145,6 +234,7 @@ function aplicarTema() {
   raiz.style.setProperty('--hairline', t.hairline);
   raiz.style.setProperty('--strong-line', t.strongLine);
   raiz.style.setProperty('--accent', t.accent);
+  raiz.style.setProperty('--accent-text', t.accentTexto);
   raiz.style.setProperty('--on-accent', t.onAccent);
   raiz.style.setProperty('--header-bg', t.headerBg);
   raiz.dataset.tema = estado.base;
@@ -552,3 +642,42 @@ function ligarFormulario() {
     }
   });
 })();
+
+// ---------- Conferência de contraste ----------
+// Roda as 72 combinações e devolve o que reprova. Não é chamada no
+// carregamento: serve para conferir no console depois de mexer na paleta.
+//   verificarContraste()            -> só as falhas
+//   verificarContraste(true)        -> a tabela inteira
+function verificarContraste(detalhado) {
+  const linhas = [];
+  Object.entries(BASES).forEach(([id, b]) => {
+    DESTAQUES.forEach((d, i) => {
+      const accent = d.cor || b.accent;
+      const texto = destaqueLegivel(accent, b.bg, b.surface, b.soft);
+      const sobre = sobreDestaque(accent, d.onAccent || b.onAccent);
+      [
+        ['destaque como texto / bg',      texto,   b.bg,      4.5],
+        ['destaque como texto / surface', texto,   b.surface, 4.5],
+        ['ícone de destaque / soft',      texto,   b.soft,    3],
+        ['texto sobre o destaque',        sobre,   accent,    4.5],
+        ['texto secundário / bg',         b.muted, b.bg,      4.5],
+        ['texto secundário / surface',    b.muted, b.surface, 4.5],
+        ['texto secundário / soft',       b.muted, b.soft,    4.5],
+        ['texto principal / bg',          b.ink,   b.bg,      4.5],
+        ['texto principal / surface',     b.ink,   b.surface, 4.5],
+        ['texto principal / soft',        b.ink,   b.soft,    4.5]
+      ].forEach(([par, fg, bg, min]) => {
+        const r = contraste(fg, bg);
+        if (detalhado || r < min) {
+          linhas.push({ tema: b.rotulo, destaque: d.nome, par: par,
+                        razao: Number(r.toFixed(2)), minimo: min,
+                        passa: r >= min, frente: fg, fundo: bg });
+        }
+      });
+    });
+  });
+  const falhas = linhas.filter(l => !l.passa).length;
+  console.log(falhas ? falhas + ' combinação(ões) reprovada(s)' : '72 combinações, nenhuma reprovação');
+  if (linhas.length) console.table(linhas);
+  return linhas;
+}
