@@ -18,103 +18,103 @@ const PROJETOS = [
     imagem: "images/ratimbum.jpg", largura: 900, altura: 506, alt: "Maquete interativa com tema do Sonic: percurso com obstáculos, loops e efeitos acionados por um botão",
     categorias: ["eletronica", "programacao"], titulo: "PROJETO RATIMBUM",
     stack: ["Arduino","Sensores","Automação","Lógica sequencial"],
-    descricao: "O projeto teve como tema o universo do Sonic, sendo desenvolvido como uma maquete interativa onde uma sequência de eventos físicos e eletrônicos era acionada automaticamente por um botão inicial. Inspirado nas fases do jogo, o percurso incluía obstáculos, loops e efeitos sonoros que representavam a velocidade e energia características do personagem. O trabalho exigiu competências em programação aplicada à eletrônica, automação de mecanismos, lógica sequencial, sincronização de sensores e motores e design criativo, resultando em uma experiência visual e funcional que unia eletrônica, movimento e narrativa temática."
+    descricao: "Uma maquete do universo do Sonic em que um único botão dispara toda a sequência: o percurso corre sozinho por obstáculos, loops e efeitos sonoros até o fim. O trabalho está todo na sincronia — sensores e motores precisam disparar na ordem certa, porque cada mecanismo depende do anterior ter terminado."
   },
   {
     imagem: "images/prototype_cinemark.png", largura: 672, altura: 715, alt: "Telas do protótipo do app Cinemark no Figma: splash screen e feed com Em Cartaz, Pré-venda e Em Breve",
     categorias: ["prototipos"], titulo: "PROTÓTIPO DE APP CINEMARK",
     stack: ["Figma","UX/UI","Design mobile","Prototipagem"],
-    descricao: "Este projeto foi um treinamento de design de interface, desenvolvido no Figma, com o objetivo de recriar o aplicativo do Cinemark. O protótipo inclui telas de splash screen e feed com seções de filmes \"Em Cartaz\", \"Pré-venda\" e \"Em Breve\", aplicando conceitos de UX/UI Design, hierarquia visual, uso de componentes reutilizáveis e prototipagem interativa. Foram exploradas também práticas de design responsivo, organização de layout mobile e consistência visual, resultando em uma interface fiel ao aplicativo original e funcional para aprimorar habilidades de design e usabilidade."
+    descricao: "Recriação do app do Cinemark no Figma, da splash screen ao feed com \"Em Cartaz\", \"Pré-venda\" e \"Em Breve\". Copiar uma interface que já existe é um exercício diferente de desenhar do zero: obriga a reparar em decisões que passam despercebidas quando se é dono da tela — espaçamento, hierarquia entre cartaz e título, o que cabe antes da dobra. Os componentes foram montados para reuso, não desenhados tela a tela."
   },
   {
     imagem: "images/prototype_protfolio.png", largura: 900, altura: 501, alt: "Protótipo de portfólio no Figma, nas versões clara e escura, com as seções Sobre, Projetos e Contato",
-    categorias: ["prototipos"], titulo: "PROTÓTIPO DE PORTFOLIO",
+    categorias: ["prototipos"], titulo: "PROTÓTIPO DESTE SITE",
     stack: ["Figma","UI/UX","Modo claro/escuro","Prototipagem"],
-    descricao: "Este projeto consiste no protótipo de um portfólio pessoal, desenvolvido no Figma, com foco em design limpo, navegação intuitiva e responsividade para diferentes dispositivos. O protótipo apresenta versões em modo claro e escuro, seções dedicadas a \"Sobre\", \"Projetos\" e \"Contato\", e conexões interativas simulando a experiência real do usuário. Foram aplicadas competências em UI/UX Design, prototipagem interativa, organização de fluxo de navegação, hierarquia visual, acessibilidade e identidade pessoal de marca, resultando em um layout funcional e esteticamente equilibrado para a futura implementação em código."
+    descricao: "O desenho que virou o site que você está lendo. Protótipo no Figma com as versões clara e escura, as seções Sobre, Projetos e Contato e as ligações entre telas. Comparar com o resultado é metade da graça: dá para ver o que sobreviveu à passagem para código e o que só deu para decidir com o conteúdo real na frente."
   },
   {
     imagem: "images/prototype_tcc.png", largura: 788, altura: 592, alt: "Telas do protótipo SmartLab no Figma: assistente acadêmica com foco em acessibilidade",
-    categorias: ["prototipos"], titulo: "PROTÓTIPO DO TCC",
+    categorias: ["prototipos"], titulo: "SMARTLAB — TCC",
     stack: ["Figma","UX acessível","IA por voz","Fluxos de navegação"],
-    descricao: "Este projeto, desenvolvido como Trabalho de Conclusão de Curso (TCC), consiste em um SmartLab — um sistema voltado para o gerenciamento inteligente do laboratório da faculdade, com foco em acessibilidade e inclusão de pessoas com deficiência visual. O protótipo foi criado no Figma e apresenta telas funcionais para login, cadastro, agendamento de equipamentos, treinamentos e interação com uma assistente de IA, capaz de auxiliar alunos por comandos de voz. Foram aplicadas competências em UX/UI Design acessível, prototipagem de sistemas complexos, integração de inteligência artificial, design de interação inclusiva e organização de fluxos de navegação, resultando em uma solução moderna e humanizada para o ambiente acadêmico."
+    descricao: "O TCC: um sistema de gestão do laboratório da faculdade desenhado em torno de quem não enxerga a tela. O protótipo cobre login, cadastro, agendamento de equipamento, treinamentos e uma assistente que responde por comando de voz. Projetar para voz muda a estrutura inteira — sem a tela servindo de mapa, a navegação precisa caber na memória de quem ouve, e cada fluxo tem que ser curto o bastante para não se perder no meio. Virou código depois, no AcademAI."
   },
   {
     imagem: "images/launching_applewatch.png", largura: 900, altura: 900, alt: "Pôster de lançamento de um smartwatch, feito no Canva",
-    categorias: ["design"], titulo: "DESIGN DE LANÇAMENTO",
+    categorias: ["design"], titulo: "LANÇAMENTO APPLE WATCH",
     stack: ["Canva","Design gráfico","Tipografia","Marketing visual"],
-    descricao: "Este projeto pessoal consistiu na criação de um pôster de lançamento de produto no Canva, simulando uma campanha oficial da Apple para o \"Apple Watch Series 10\". Foram aplicadas competências em design gráfico, composição visual, hierarquia tipográfica, uso de cores e contrastes, e marketing visual. O trabalho também envolveu criatividade na simulação de identidade de marca, atenção ao layout profissional e noções de comunicação publicitária, resultando em uma peça visual moderna e coerente com o estilo da marca."
+    descricao: "Pôster de lançamento do Apple Watch Series 10, feito como se fosse peça oficial da Apple. Imitar uma marca de linguagem tão fechada não deixa espaço para inventar: ou o espaçamento, o peso da tipografia e o silêncio em volta do produto estão certos, ou a peça denuncia na hora que não é deles."
   },
   {
     imagem: "images/online_coding_workshop.png", largura: 900, altura: 450, alt: "Anúncio digital de um workshop de programação online, feito no Canva",
-    categorias: ["design"], titulo: "DESIGN DE WORKSHOP DE PROGRAMAÇÃO",
+    categorias: ["design"], titulo: "ANÚNCIO DE WORKSHOP",
     stack: ["Canva","Design gráfico","Layout","Marketing digital"],
-    descricao: "Este projeto consistiu na criação de um anúncio digital para um workshop de programação, desenvolvido no Canva com foco em comunicação visual e clareza informativa. Foram aplicadas competências em design gráfico, organização de layout, uso de cores e tipografia para impacto visual, e estratégias de marketing digital voltadas à divulgação de eventos. O trabalho também envolveu criatividade na composição e consistência estética, resultando em um material atrativo e profissional para promover o evento online."
+    descricao: "Anúncio de um workshop de programação, para circular em rede social. É peça de informação antes de ser peça de estética: data, tema e como se inscrever precisam ser lidos num passar de olhos, e é isso que decide a hierarquia — não o gosto."
   },
   {
     imagem: "images/techexpo.png", largura: 506, altura: 900, alt: "Pôster do evento fictício de tecnologia Future Tech Expo",
-    categorias: ["design"], titulo: "DESIGN DE EVENTO FICTÍCIO",
+    categorias: ["design"], titulo: "FUTURE TECH EXPO",
     stack: ["Canva","Pôster","Identidade visual","Harmonia cromática"],
-    descricao: "Este projeto consistiu na criação de um pôster digital para um evento fictício de tecnologia, o Future Tech Expo, desenvolvido no Canva. Foram aplicadas competências em design gráfico, composição visual e identidade tecnológica, utilizando elementos como ícones de circuitos e cores frias para transmitir inovação e modernidade. O trabalho também envolveu organização hierárquica de informações, harmonia cromática e noções de marketing visual, resultando em uma peça profissional voltada à divulgação de conferências e eventos do setor tecnológico."
+    descricao: "Pôster de um evento de tecnologia inventado para o exercício. A identidade se apoia em ícones de circuito e paleta fria, e a dificuldade do gênero é justamente essa: \"tecnologia\" tem um clichê visual pronto, e sair dele sem perder a leitura imediata do tema é o trabalho."
   },
   {
     imagem: "images/galao_agua.jpg", largura: 831, altura: 900, alt: "Sistema de abastecimento automatizado: galão de água com sensor de nível e bomba",
     categorias: ["eletronica", "programacao"], titulo: "CONTROLE DE NÍVEL DE TANQUE",
     stack: ["Automação","Sensores de nível","PCB","Programação embarcada"],
-    descricao: "O projeto tem como objetivo desenvolver um sistema automatizado de abastecimento de água, no qual uma bomba transfere o líquido de um reservatório inferior para um tanque superior conforme o nível detectado por sensores. O sistema deve monitorar o nível de forma escalonada, acionar a bomba automaticamente e permitir o esvaziamento controlado do tanque. Exigiu competências em automação, eletrônica, controle de sensores e atuadores, além de montagem de circuito com PCB e programação embarcada para o gerenciamento do processo."
+    descricao: "Sistema que enche um tanque superior puxando água de um reservatório embaixo, ligando a bomba conforme o nível lido pelos sensores. O nível é monitorado de forma escalonada, e o esvaziamento também é controlado. Circuito montado em PCB, com a lógica em programação embarcada."
   },
   {
     imagem: "images/braço_mecanico.jpg", largura: 900, altura: 675, alt: "Braço robótico articulado montado, controlado por Arduino UNO",
     categorias: ["eletronica", "programacao"], titulo: "BRAÇO ROBÓTICO",
     stack: ["Arduino UNO","C++","Servomotores","Joystick"],
-    descricao: "O projeto \"Braço Robótico\" teve como objetivo desenvolver um sistema controlado por Arduino UNO, utilizando a linguagem C++ para movimentar articulações por meio de servomotores. Foram aplicadas competências em eletrônica, montagem de circuitos e programação embarcada, além do uso de componentes como joystick, interruptor e resistores. O trabalho exigiu conhecimentos em controle de movimento, prototipagem de placas e testes práticos em laboratório."
+    descricao: "Braço articulado movido por servomotores e controlado por joystick, com firmware em C++ num Arduino UNO. Montagem de circuito com joystick, interruptor e resistores, prototipagem da placa e teste em laboratório."
   },
   {
     imagem: "images/cofre.jpg", largura: 900, altura: 690, alt: "Cofre eletrônico com teclado e travamento por senha, controlado por ATmega328P",
     categorias: ["eletronica", "programacao"], titulo: "COFRE COM SENHA",
     stack: ["ATmega328P","Assembly","Teclado matricial","Trava solenoide"],
-    descricao: "O projeto consistiu na criação de um sistema eletrônico controlado pelo microcontrolador ATmega328P, programado em Assembly. Envolveu competências em eletrônica e programação de baixo nível, com integração de teclado matricial, LED e trava solenoide. Exigiu conhecimentos em arquitetura de hardware, montagem de circuitos, depuração e documentação técnica."
+    descricao: "Cofre eletrônico com teclado matricial e trava solenoide, controlado por um ATmega328P programado em Assembly. Escrever em Assembly quer dizer tratar a varredura do teclado, a comparação da senha e o acionamento da trava direto nos registradores do microcontrolador, sem nenhuma camada de abstração no meio."
   },
   {
     imagem: "images/gigante_mdf.PNG", largura: 1045, altura: 997, alt: "Robô móvel de MDF com motores e sensores, controlado por ATMega328(p)",
     categorias: ["eletronica", "programacao", "codigo"], titulo: "GIGANTE DE MDF",
     links: [{ tipo: "repo", url: "https://github.com/tysper/universidade_unisanta_gigantes_de_mdf" }],
     stack: ["C", "ATMega328(p)", "PWM", "Timers", "Doxygen"],
-    descricao: "O trabalho \"Gigantes de MDF\" consistiu no desenvolvimento de um robô móvel controlado por um microcontrolador ATMega328(p)(PB), integrando eletrônica, mecânica e programação embarcada. Foram aplicadas competências em lógica de controle com PWM, timers e interrupções, além do projeto de circuitos para acionamento de motores e sensores sem uso de bibliotecas prontas. Exigiu domínio em programação C/C++, documentação técnica com Doxygen, versionamento no GitHub e trabalho em equipe para cumprimento das etapas e prazos definidos."
+    descricao: "Robô móvel sobre um ATMega328(p), com motores em PWM, temporizadores e interrupções escritos sem nenhuma biblioteca pronta. O controle inteiro foi montado a partir dos registradores. Código documentado com Doxygen e versionado no GitHub, em equipe e com prazo por etapa."
   },
   {
     imagem: "images/calcResistor.png", largura: 646, altura: 474, alt: "Tela do programa em C# que calcula resistência equivalente",
-    categorias: ["programacao"], titulo: "CÁLCULO DE RESISTORES",
+    categorias: ["programacao"], titulo: "ASSOCIAÇÃO DE RESISTORES",
     stack: ["C#","Windows Forms","Visual Studio","Leis de Ohm"],
-    descricao: "O projeto desenvolvido em C# no Visual Studio Community tem como objetivo calcular valores equivalentes de resistência elétrica a partir de resistores informados pelo usuário. O sistema aplicou conhecimentos de eletricidade e circuitos, incluindo associação de resistores e leis de Ohm, aliados a lógica de programação, manipulação de variáveis numéricas e interface gráfica com Windows Forms. Exigiu também compreensão de conceitos de eletrônica básica e estruturação de código orientado a eventos para exibir os resultados de forma clara e interativa."
+    descricao: "Calculadora de associação de resistores em C# com Windows Forms: entram os valores, sai a resistência equivalente. Exercício de fundamentos — leis de Ohm, série e paralelo, e interface orientada a eventos."
   },
   {
     imagem: "images/calcDesloceVel.png", largura: 805, altura: 514, alt: "Tela do programa em C# que calcula deslocamento e velocidade",
-    categorias: ["programacao"], titulo: "CÁLCULO DE DESLOC. E VELOCIDADE",
+    categorias: ["programacao"], titulo: "CINEMÁTICA — MRUV",
     stack: ["C#","Windows Forms","POO","MRUV"],
-    descricao: "O projeto foi desenvolvido em C# no Visual Studio Community e tem como objetivo calcular o deslocamento e a velocidade de um veículo a partir de valores inseridos pelo usuário. O trabalho envolveu competências em lógica de programação, aplicação de fórmulas de cinemática (MRUV), desenvolvimento de interfaces gráficas (Windows Forms) e manipulação de eventos e entradas de dados. Também exigiu conhecimentos de estruturação de código orientado a objetos, tratamento de variáveis numéricas e organização visual da interface para uma experiência de uso clara e funcional."
+    descricao: "Calculadora de movimento uniformemente variado em C#: entra a condição inicial, saem deslocamento e velocidade. Exercício de fundamentos de cinemática e de orientação a objetos."
   },
   {
     imagem: "images/calcFatrito.png", largura: 563, altura: 693, alt: "Tela do programa em C# que calcula força de atrito",
-    categorias: ["programacao"], titulo: "CÁLCULO DE FORÇA DE ATRITO",
+    categorias: ["programacao"], titulo: "FORÇA DE ATRITO",
     stack: ["C#","Windows Forms","Física aplicada","Eventos"],
-    descricao: "O projeto, desenvolvido em C# no Visual Studio Community, tem como objetivo determinar a força de atrito resultante a partir de dados inseridos pelo usuário, como massa, coeficiente de atrito, força aplicada, ângulo e deslocamento. O sistema exigiu competências em lógica matemática e física aplicada, programação orientada a eventos, manipulação de dados numéricos e fórmulas físicas, além de desenvolvimento de interface gráfica (Windows Forms) com foco em clareza, funcionalidade e interação do usuário."
+    descricao: "Calculadora de força de atrito em C#, com massa, coeficiente, força aplicada, ângulo e deslocamento como entrada. Exercício de fundamentos de física aplicada."
   },
   {
     imagem: "images/vldCartao.png", largura: 647, altura: 477, alt: "Tela do programa em C# que valida números de cartão de crédito",
-    categorias: ["programacao"], titulo: "VALIDAÇÃO DE CARTÃO",
+    categorias: ["programacao"], titulo: "ALGORITMO DE LUHN",
     stack: ["C#","Windows Forms","Algoritmo de Luhn","Validação"],
-    descricao: "O projeto, desenvolvido em C# no Visual Studio Community, tem como objetivo validar números de cartão de crédito inseridos pelo usuário, aplicando o algoritmo de Luhn. O sistema exigiu competências em lógica de programação, tratamento de strings e dados numéricos, validação de entradas, e interface gráfica com Windows Forms. Também envolveu conhecimentos de segurança e verificação de dados, garantindo o funcionamento correto e intuitivo da aplicação."
+    descricao: "Implementação do algoritmo de Luhn em C#: dobra os dígitos em posição alternada, soma tudo, e o número só é válido se o total fechar em múltiplo de dez. É a verificação que barra erro de digitação em número de cartão antes de qualquer consulta à operadora — checagem local, sem rede."
   },
   {
     imagem: "images/vldRG.png", largura: 801, altura: 462, alt: "Tela do programa em C# que valida números de RG",
-    categorias: ["programacao"], titulo: "VALIDAÇÃO DE RG",
+    categorias: ["programacao"], titulo: "DÍGITO VERIFICADOR DE RG",
     stack: ["C#","Windows Forms","Strings","Validação"],
-    descricao: "O projeto desenvolvido em C# no Visual Studio Community tem como objetivo validar números de Registro Geral (RG) digitados pelo usuário. O sistema aplicou competências em lógica de programação, tratamento e verificação de dados numéricos, implementação de algoritmos de validação, e desenvolvimento de interface gráfica com Windows Forms. Também envolveu manipulação de strings, controle de eventos e boas práticas de usabilidade, garantindo uma validação rápida e visualmente intuitiva."
+    descricao: "Validador de RG em C#, implementando o dígito verificador. Cada posição do número carrega um peso, a soma ponderada determina o último algarismo, e trocar qualquer dígito quebra a conta. Mesma família de verificação do Luhn, com outra regra de peso."
   },
   {
     imagem: "images/veias.png", largura: 528, altura: 591, alt: "Protótipo portátil de scanner de veias por infravermelho",
     categorias: ["eletronica", "programacao"], titulo: "SCANNER DE VEIAS",
     stack: ["Android","OpenCV","Visão computacional","LEDs NIR 850nm"],
-    descricao: "O projeto teve como objetivo criar um protótipo portátil e de baixo custo capaz de auxiliar na localização de veias para punção intravenosa. O sistema utiliza LEDs NIR de 850 nm, filtro infravermelho feito com lentes de óculos 3D, câmera de smartphone e um aplicativo Android desenvolvido com OpenCV para processamento de imagem. O trabalho exigiu competências em eletrônica, óptica, programação mobile e visão computacional, visando tornar essa tecnologia mais acessível e eficiente para uso médico."
+    descricao: "Protótipo portátil para achar veia antes de punção, com LEDs infravermelhos de 850 nm e um filtro improvisado de lentes de óculos 3D. A imagem vem da câmera de um celular comum, e um aplicativo Android processa com OpenCV para realçar o contraste que o infravermelho revela sob a pele. A intenção é essa mesmo — pôr ao alcance uma tecnologia que costuma vir em aparelho caro."
   }
 ];

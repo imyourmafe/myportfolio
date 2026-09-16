@@ -10,7 +10,7 @@ const REPOS = [
     titulo: "AcademAI — assistente virtual acadêmica",
     categorias: ["codigo", "prototipos"],
     stack: ["React 19", "TypeScript", "Vite", "React Router", "Axios"],
-    descricao: "Aplicação web do TCC, com o intuito de criar uma assistente virtual. O front-end é construído em React 19 com TypeScript sobre Vite, usando React Router para navegação, Axios para consumo de API e ícones Lucide. O projeto é a continuação em código do protótipo SmartLab desenhado no Figma."
+    descricao: "A outra metade do SmartLab: o protótipo do TCC virando código. Front-end em React 19 com TypeScript sobre Vite, React Router para navegação e Axios para consumo de API. Dá para abrir o protótipo no Figma e este repositório lado a lado e ver o que mudou entre desenhar e construir."
   },
   {
     tipo: "codigo",
