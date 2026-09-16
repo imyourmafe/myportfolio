@@ -33,10 +33,10 @@ const PROJETOS = [
     descricao: "O desenho que virou o site que você está lendo. Protótipo no Figma com as versões clara e escura, as seções Sobre, Projetos e Contato e as ligações entre telas. Comparar com o resultado é metade da graça: dá para ver o que sobreviveu à passagem para código e o que só deu para decidir com o conteúdo real na frente."
   },
   {
-    imagem: "images/prototype_tcc.png", largura: 788, altura: 592, alt: "Telas do protótipo SmartLab no Figma: assistente acadêmica com foco em acessibilidade",
-    categorias: ["prototipos"], titulo: "SMARTLAB — TCC",
+    imagem: "images/prototype_tcc.png", largura: 788, altura: 592, alt: "Tela inicial do protótipo no Figma, com o catálogo de equipamentos do laboratório — impressora 3D, cortadora a laser, prototipadora — e o estado de cada um para agendamento",
+    categorias: ["prototipos"], titulo: "ACADEMAI — PROTÓTIPO",
     stack: ["Figma","UX acessível","IA por voz","Fluxos de navegação"],
-    descricao: "O TCC: um sistema de gestão do laboratório da faculdade desenhado em torno de quem não enxerga a tela. O protótipo cobre login, cadastro, agendamento de equipamento, treinamentos e uma assistente que responde por comando de voz. Projetar para voz muda a estrutura inteira — sem a tela servindo de mapa, a navegação precisa caber na memória de quem ouve, e cada fluxo tem que ser curto o bastante para não se perder no meio. Virou código depois, no AcademAI."
+    descricao: "O protótipo do AcademAI, o TCC: um sistema de gestão do laboratório da faculdade desenhado em torno de quem não enxerga a tela. As telas cobrem login, cadastro, o catálogo de equipamentos com o estado de cada um, agendamento, treinamentos e uma assistente que responde por comando de voz. Projetar para voz muda a estrutura inteira — sem a tela servindo de mapa, a navegação precisa caber na memória de quem ouve, e cada fluxo tem que ser curto o bastante para não se perder no meio. O projeto trocou de nome no caminho: as telas ainda trazem o InovFabLab no topo."
   },
   {
     imagem: "images/launching_applewatch.png", largura: 900, altura: 900, alt: "Pôster de lançamento de um smartwatch, feito no Canva",
