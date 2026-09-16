@@ -208,7 +208,20 @@ const armazenamento = {
   }
 };
 
-const estado = { base: 'claro', destaque: 0, icone: 'monograma', filtro: 'todos' };
+// Objeto literal herda Object.prototype, então um `if (MAPA[chave])` aceita
+// "constructor", "valueOf", "__proto__" e "hasOwnProperty" — e o valor herdado
+// quebra adiante. Medido antes desta guarda: com {"icone":"valueOf"} gravado, o
+// throw em aplicarIcone() derrubava o IIFE iniciar() inteiro e a página ficava
+// em branco. Só chave própria conta.
+function temChave(mapa, chave) {
+  return typeof chave === 'string' && Object.hasOwn(mapa, chave);
+}
+
+// O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
+// renomear ou reordenar GLIFOS não virar página quebrada.
+const ICONE_PADRAO = Object.keys(GLIFOS)[0];
+
+const estado = { base: 'claro', destaque: 0, icone: ICONE_PADRAO, filtro: 'todos' };
 
 function temaAtual() {
   const b = BASES[estado.base] || BASES.claro;
@@ -264,7 +277,7 @@ function salvar(patch) {
 function aplicarIcone() {
   const alvo = document.getElementById('marcaIcone');
   if (!alvo) return;
-  const fabrica = GLIFOS[estado.icone] || GLIFOS.monograma;
+  const fabrica = temChave(GLIFOS, estado.icone) ? GLIFOS[estado.icone] : GLIFOS[ICONE_PADRAO];
   alvo.replaceChildren(fabrica());
 }
 
@@ -630,9 +643,11 @@ function ligarFormulario() {
 (function iniciar() {
   const salvo = armazenamento.ler();
   if (salvo) {
-    if (BASES[salvo.base]) estado.base = salvo.base;
-    if (DESTAQUES[salvo.destaque]) estado.destaque = salvo.destaque;
-    if (GLIFOS[salvo.icone]) estado.icone = salvo.icone;
+    if (temChave(BASES, salvo.base)) estado.base = salvo.base;
+    if (Number.isInteger(salvo.destaque) && salvo.destaque >= 0 && salvo.destaque < DESTAQUES.length) {
+      estado.destaque = salvo.destaque;
+    }
+    if (temChave(GLIFOS, salvo.icone)) estado.icone = salvo.icone;
   }
 
   aplicarTema();
