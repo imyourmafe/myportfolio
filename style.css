@@ -30,7 +30,6 @@ body{
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
-  transition: background-color .4s ease, color .4s ease;
 }
 
 a{ color: inherit; text-decoration: none; }
@@ -624,6 +623,31 @@ img{ max-width: 100%; }
 .modal-link{ margin-top: 8px; align-self: flex-start; font-size: .85rem; padding: .7rem 1.2rem; }
 .modal-link[hidden]{ display: none; }
 body.modal-aberto{ overflow: hidden; }
+
+/* ===== Troca de tema =====
+   Antes só o fundo da página tinha transição, então o cabeçalho, os cards, os
+   botões e todos os textos cortavam seco enquanto o fundo ia desaparecendo —
+   e em temas de fundo parecido (Claro -> Papel) a única coisa que animava era
+   invisível, o que fazia a troca parecer instantânea.
+
+   A classe entra em <html> logo antes de os tokens mudarem e sai quando a
+   transição acaba, então hover e foco seguem instantâneos no resto do tempo.
+   Vem depois das regras de componente de propósito: mesma especificidade,
+   ganha por ordem. Quem pede menos movimento continua tendo a troca na hora,
+   pelo bloco de prefers-reduced-motion logo abaixo. */
+html.trocando-tema,
+html.trocando-tema *,
+html.trocando-tema *::before,
+html.trocando-tema *::after{
+  transition: background-color .35s ease,
+              border-color .35s ease,
+              outline-color .35s ease,
+              color .35s ease,
+              fill .35s ease,
+              stroke .35s ease,
+              box-shadow .35s ease,
+              transform .25s ease;
+}
 
 /* ===== Responsivo ===== */
 @media (max-width: 880px){
