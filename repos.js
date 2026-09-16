@@ -6,7 +6,7 @@ const REPOS = [
   {
     tipo: "codigo",
     repo: "fabriciosuzart/AcademAI",
-    url: "https://github.com/fabriciosuzart/AcademAI",
+    links: [{ tipo: "repo", url: "https://github.com/fabriciosuzart/AcademAI" }],
     titulo: "AcademAI — assistente virtual acadêmica",
     categorias: ["codigo", "prototipos"],
     stack: ["React 19", "TypeScript", "Vite", "React Router", "Axios"],
@@ -15,7 +15,7 @@ const REPOS = [
   {
     tipo: "codigo",
     repo: "GestaoProjetos2026/crm-leads",
-    url: "https://github.com/GestaoProjetos2026/crm-leads",
+    links: [{ tipo: "repo", url: "https://github.com/GestaoProjetos2026/crm-leads" }],
     titulo: "CRM Leads — automação de marketing",
     categorias: ["codigo", "programacao"],
     stack: ["Node.js", "Docker", "PostgreSQL", "Redis", "GitHub Actions"],
@@ -23,17 +23,8 @@ const REPOS = [
   },
   {
     tipo: "codigo",
-    repo: "tysper/universidade_unisanta_gigantes_de_mdf",
-    url: "https://github.com/tysper/universidade_unisanta_gigantes_de_mdf",
-    titulo: "Gigantes de MDF — robô ATMega328",
-    categorias: ["codigo", "programacao"],
-    stack: ["C", "ATMega328(p)", "PWM", "Timers", "Doxygen"],
-    descricao: "Robô funcional desenvolvido na disciplina de Programação de Hardware: movimentação por motores controlados via PWM, \"arma laser\" acionada por temporizadores, detecção por sensores e lógica de controle escrita sem bibliotecas prontas. O código é documentado com Doxygen e versionado no GitHub."
-  },
-  {
-    tipo: "codigo",
     repo: "Tec-SCTV/Diagramas",
-    url: "https://github.com/Tec-SCTV/Diagramas",
+    links: [{ tipo: "repo", url: "https://github.com/Tec-SCTV/Diagramas" }],
     titulo: "Diagramas — setor técnico SCTV",
     categorias: ["codigo", "design"],
     stack: ["Documentação técnica", "Diagramas"],
