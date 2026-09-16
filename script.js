@@ -168,15 +168,24 @@ function glifoTexto(conteudo, familia, tamanho) {
   return span;
 }
 
+// A ORDEM DAS CHAVES É A ORDEM VISUAL DO PAINEL (renderPainel usa Object.keys),
+// e a primeira é o glifo padrão — reordenar não é cosmético.
+//
+// `rotulo` é o que a pessoa lê: vai para o title e para o texto do leitor de
+// tela, os dois da mesma fonte. A chave fica sendo só identificador (entra no
+// id do radio), então nada de acento ou espaço nela.
+//
+// `ICONES_CONTATO`, logo abaixo, continua sendo mapa de funções puro de
+// propósito: aqueles ícones não são escolhíveis e não precisam de rótulo.
 const GLIFOS = {
-  monograma: () => glifoTexto('MF', "'Instrument Serif', Georgia, serif", '18px'),
-  codigo:    () => glifoTexto('</>', 'ui-monospace, SFMono-Regular, Menlo, monospace', '12px'),
-  faisca:    () => svgEl(null, [['path', { d: 'M12 3c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9Z' }]]),
-  asterisco: () => svgEl(null, [['path', { d: 'M12 4v16' }], ['path', { d: 'M4.5 8 19.5 16' }], ['path', { d: 'M19.5 8 4.5 16' }]]),
-  anel:      () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 8.5 }], ['circle', { cx: 12, cy: 12, r: 3, fill: 'currentColor', stroke: 'none' }]]),
-  hexagono:  () => svgEl(null, [['polygon', { points: '12 2.5 20.5 7.25 20.5 16.75 12 21.5 3.5 16.75 3.5 7.25' }]]),
-  losango:   () => svgEl(null, [['path', { d: 'M12 3 21 12 12 21 3 12Z' }]]),
-  ponto:     () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 6, fill: 'currentColor', stroke: 'none' }]])
+  monograma: { rotulo: 'Monograma', desenhar: () => glifoTexto('MF', "'Instrument Serif', Georgia, serif", '18px') },
+  codigo:    { rotulo: 'Código',    desenhar: () => glifoTexto('</>', 'ui-monospace, SFMono-Regular, Menlo, monospace', '12px') },
+  faisca:    { rotulo: 'Faísca',    desenhar: () => svgEl(null, [['path', { d: 'M12 3c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9Z' }]]) },
+  asterisco: { rotulo: 'Asterisco', desenhar: () => svgEl(null, [['path', { d: 'M12 4v16' }], ['path', { d: 'M4.5 8 19.5 16' }], ['path', { d: 'M19.5 8 4.5 16' }]]) },
+  anel:      { rotulo: 'Anel',      desenhar: () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 8.5 }], ['circle', { cx: 12, cy: 12, r: 3, fill: 'currentColor', stroke: 'none' }]]) },
+  hexagono:  { rotulo: 'Hexágono',  desenhar: () => svgEl(null, [['polygon', { points: '12 2.5 20.5 7.25 20.5 16.75 12 21.5 3.5 16.75 3.5 7.25' }]]) },
+  losango:   { rotulo: 'Losango',   desenhar: () => svgEl(null, [['path', { d: 'M12 3 21 12 12 21 3 12Z' }]]) },
+  ponto:     { rotulo: 'Ponto',     desenhar: () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 6, fill: 'currentColor', stroke: 'none' }]]) }
 };
 
 const ICONES_CONTATO = {
@@ -277,8 +286,8 @@ function salvar(patch) {
 function aplicarIcone() {
   const alvo = document.getElementById('marcaIcone');
   if (!alvo) return;
-  const fabrica = temChave(GLIFOS, estado.icone) ? GLIFOS[estado.icone] : GLIFOS[ICONE_PADRAO];
-  alvo.replaceChildren(fabrica());
+  const glifo = temChave(GLIFOS, estado.icone) ? GLIFOS[estado.icone] : GLIFOS[ICONE_PADRAO];
+  alvo.replaceChildren(glifo.desenhar());
 }
 
 // ---------- Utilidades ----------
@@ -525,11 +534,11 @@ function renderPainel() {
     () => { salvar({ icone: k }); aplicarIcone(); },
     (label) => {
       label.className = 'opcao-icone';
-      label.title = k;
+      label.title = GLIFOS[k].rotulo;
       const nome = document.createElement('span');
       nome.className = 'sr-only';
-      nome.textContent = k;
-      label.append(GLIFOS[k](), nome);
+      nome.textContent = GLIFOS[k].rotulo;
+      label.append(GLIFOS[k].desenhar(), nome);
     }
   )));
 }
