@@ -28,7 +28,7 @@ const BASES = {
   papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#706356', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
   matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5B6C54', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
   lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6A5F83', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
-  ambar:   { rotulo: 'Âmbar',   bg: '#FBF4E9', surface: '#FFFCF7', ink: '#33220F', muted: '#7A6246', soft: '#F2E2CA', hairline: 'rgba(51,34,15,.14)',    strongLine: 'rgba(51,34,15,.35)',    accent: '#B06A1E', onAccent: '#FFFCF7' }
+  petroleo:{ rotulo: 'Petróleo',bg: '#062422', surface: '#0C302C', ink: '#E3EFEC', muted: '#9DBDB7', soft: '#123F39', hairline: 'rgba(227,239,236,.15)', strongLine: 'rgba(227,239,236,.42)', accent: '#4FC9BC', onAccent: '#062422' }
 };
 
 // A primeira opção mantém o destaque próprio de cada tema.
@@ -226,6 +226,8 @@ function temChave(mapa, chave) {
   return typeof chave === 'string' && Object.hasOwn(mapa, chave);
 }
 
+const APELIDOS_TEMA = { ambar: 'papel' };
+
 // O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
 // renomear ou reordenar GLIFOS não virar página quebrada.
 const ICONE_PADRAO = Object.keys(GLIFOS)[0];
@@ -235,7 +237,7 @@ const estado = { base: 'claro', destaque: 0, icone: ICONE_PADRAO, filtro: 'todos
 function temaAtual() {
   const b = BASES[estado.base] || BASES.claro;
   const d = DESTAQUES[estado.destaque] || DESTAQUES[0];
-  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)' };
+  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)', petroleo: 'rgba(6,36,34,.82)' };
   const accent = d.cor || b.accent;
   return Object.assign({}, b, {
     accent: accent,
@@ -652,7 +654,12 @@ function ligarFormulario() {
 (function iniciar() {
   const salvo = armazenamento.ler();
   if (salvo) {
-    if (temChave(BASES, salvo.base)) estado.base = salvo.base;
+    // Temas que saíram apontam para o sobrevivente mais próximo, para a escolha
+    // de quem já visitou não evaporar. O Âmbar era o tema mais parecido com o
+    // Papel de todos (distância 62, contra 125 do segundo par mais próximo), e
+    // foi removido por isso mesmo — então Papel é onde ele menos estranha.
+    const base = APELIDOS_TEMA[salvo.base] || salvo.base;
+    if (temChave(BASES, base)) estado.base = base;
     if (Number.isInteger(salvo.destaque) && salvo.destaque >= 0 && salvo.destaque < DESTAQUES.length) {
       estado.destaque = salvo.destaque;
     }
