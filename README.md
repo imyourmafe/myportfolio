@@ -1,57 +1,62 @@
-# 📁 Portfólio Pessoal - Parte 1 
-Este é meu projeto final desenvolvido durante o curso Tecnologia Web - Engenharia da Computação. Trata-se de um site de portfólio pessoal com informações sobre mim, meus projetos e formas de contato.
+# Portfólio — Maria Fernanda de Almeida Maneira
 
----
+Portfólio pessoal, escrito à mão em HTML, CSS e JavaScript. Sem framework, sem
+etapa de build, sem dependência: é só abrir o `index.html`.
 
-## 📌 Sobre o Projeto
-Este site foi criado com foco em aplicar os conhecimentos de **HTML**, **CSS**, **JavaScript**, **Flexbox**, **responsividade** e **publicação com GitHub Pages**.
+**Ao vivo:** https://imyourmafe.github.io/myportfolio/
 
-O projeto foi dividido em duas fases:
-- **Parte 1 (Semana 5):** Estruturação HTML e protótipo no Figma  
-- **Parte 2 (Semana 11):** Finalização com responsividade, interatividade e publicação online
+## O que tem de diferente
 
----
+O botão de personalizar, no canto do cabeçalho, abre **8 temas × 9 cores de
+destaque × 8 ícones de marca**, livremente combináveis. Cada escolha é aplicada
+e gravada no instante do clique — não há botão de salvar — e volta na próxima
+visita.
 
-## 🧪 Funcionalidades
-- Página **Sobre Mim** com imagem e descrição
-- Seção de **Projetos** com links e descrições
-- Formulário de **Contato** com validação básica
-- **Tema claro/escuro**
-- Layout para desktop
-- Filtro **dinâmico** do portfolio
-- Mensagem de boas-vindas **de acordo com a hora**
-- Validação de formulário de contato
-- Scroll suave **entre seções**
-- Mensagem temporária **validando o envio de mensagem**
+A parte interessante é o contraste. Uma cor só não consegue ser legível como
+texto em tema claro e escuro ao mesmo tempo: para passar sobre o card do tema
+Rosa a luminância precisa ficar abaixo de 0,125, e para passar sobre o card do
+tema Escuro precisa ficar acima de 0,225 — não existe interseção. Então o
+destaque tem dois papéis separados:
 
----
+- `--accent` é a cor da paleta, usada nos preenchimentos, exatamente como foi
+  desenhada;
+- `--accent-text` é uma versão dela derivada em tempo de execução: mantém o
+  matiz e a saturação e move só a luminosidade até alcançar o mínimo da WCAG
+  sobre os fundos daquele tema.
 
-## 🧰 Recursos Utilizados
-- HTML
-- CSS3 + Flexbox
-- JavaScript
-- Google Fonts
+As **72 combinações de tema e destaque passam em AA**. O próprio arquivo traz a
+função que audita isso — abra o console e rode `verificarContraste()`.
 
+## Acessibilidade
 
----
+- Navegação inteira por teclado, com foco sempre visível.
+- O modal de projeto prende o foco marcando o resto da página como `inert`;
+  `Escape` fecha e o foco volta para o card de origem.
+- As opções do painel são `input[type="radio"]` nativos, então funcionam com
+  leitor de tela sem nenhum ARIA extra.
+- Sem JavaScript a página continua com título, bio, contatos e formulário
+  legíveis.
+- `prefers-reduced-motion` desliga as transições, inclusive a troca de tema.
 
-## 🎨 Protótipo
-Link para o protótipo criado no Figma:  
-[🔗 Ver protótipo](https://www.figma.com/design/vkv3gTAXWuBMkedOwm9vjB/P1-de-TecWeb?node-id=11-72&t=Y3LsnnypDwKBmDWt-1)
+Verificado com axe-core nos 8 temas, html-validate e testes de teclado,
+responsivo e sem-JS.
 
----
+## Estrutura
 
-## 📢 Instruções para uso
-- Clicar duas vezes no arquivo "index.html" para abri-lo
+| Arquivo | O que é |
+| --- | --- |
+| `index.html` | página única, com todas as seções |
+| `style.css` | estilo e os tokens de tema |
+| `script.js` | temas, contraste, cards, modal, filtros, formulário |
+| `projects.js` | os projetos, um objeto por card |
+| `repos.js` | repositórios de código exibidos na mesma grade |
+| `images/` | capas dos projetos e ícones do site |
 
----
+Para rodar: clone e abra o `index.html`, ou sirva a pasta com qualquer servidor
+estático.
 
-## 📄 Licença
-Este projeto é de uso educacional, criado como parte da disciplina **Tecnologia Web**.
+## Contato
 
----
-
-## 🙋‍♀️ Desenvolvido por
-**Maria Fernanda de Almeida Maneira - 214348**  
-Turma: Semestre 8
-GitHub: [github.com/imyourmafe](https://github.com/imyourmafe)
+- E-mail: mariafernandamaneira@hotmail.com
+- LinkedIn: https://www.linkedin.com/in/maria-fernanda-maneira
+- GitHub: https://github.com/imyourmafe

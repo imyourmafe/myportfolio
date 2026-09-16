@@ -28,7 +28,7 @@ const BASES = {
   papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#706356', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
   matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5B6C54', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
   lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6A5F83', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
-  ambar:   { rotulo: 'Âmbar',   bg: '#FBF4E9', surface: '#FFFCF7', ink: '#33220F', muted: '#7A6246', soft: '#F2E2CA', hairline: 'rgba(51,34,15,.14)',    strongLine: 'rgba(51,34,15,.35)',    accent: '#B06A1E', onAccent: '#FFFCF7' }
+  petroleo:{ rotulo: 'Petróleo',bg: '#062422', surface: '#0C302C', ink: '#E3EFEC', muted: '#9DBDB7', soft: '#123F39', hairline: 'rgba(227,239,236,.15)', strongLine: 'rgba(227,239,236,.42)', accent: '#4FC9BC', onAccent: '#062422' }
 };
 
 // A primeira opção mantém o destaque próprio de cada tema.
@@ -195,14 +195,25 @@ const ICONES_CONTATO = {
   download: () => svgEl(null, [['path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }], ['polyline', { points: '7 10 12 15 17 10' }], ['line', { x1: 12, x2: 12, y1: 15, y2: 3 }]])
 };
 
+// Tipos de link que um projeto pode ter. A ordem aqui é a ordem dos botões no
+// modal: o que dá para ver primeiro, o que dá para ler depois.
+const TIPOS_LINK = {
+  demo:  { rotulo: 'Ver ao vivo',     icone: () => svgEl(null, [['path', { d: 'M15 3h6v6' }], ['path', { d: 'M10 14 21 3' }], ['path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }]]) },
+  figma: { rotulo: 'Ver no Figma',    icone: () => svgEl(null, [['path', { d: 'M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5Z' }], ['path', { d: 'M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2Z' }], ['path', { d: 'M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0Z' }], ['path', { d: 'M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0Z' }], ['path', { d: 'M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5Z' }]]) },
+  video: { rotulo: 'Ver o vídeo',     icone: () => svgEl(null, [['path', { d: 'm16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5' }], ['rect', { x: 2, y: 6, width: 14, height: 12, rx: 2 }]]) },
+  repo:  { rotulo: 'Abrir no GitHub', icone: () => ICONES_CONTATO.github() }
+};
+
 const CONTATOS = [
   { rotulo: 'E-mail',    valor: 'mariafernandamaneira@hotmail.com', href: 'mailto:mariafernandamaneira@hotmail.com', icone: 'email' },
   { rotulo: 'LinkedIn',  valor: 'maria-fernanda-maneira',           href: 'https://www.linkedin.com/in/maria-fernanda-maneira', icone: 'linkedin' },
   { rotulo: 'GitHub',    valor: 'github.com/imyourmafe',            href: 'https://github.com/imyourmafe', icone: 'github' },
-  { rotulo: 'Currículo', valor: 'Baixar PDF',                       href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
+  { rotulo: 'Currículo', valor: 'Ver currículo',                    href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
 ];
 
-const CHIPS = ['HTML', 'CSS', 'JAVASCRIPT', 'FIGMA', 'CANVA', 'CAPCUT'];
+// Só entra aqui o que aparece de fato na stack de algum projeto. O CAPCUT
+// estava nesta lista e não constava em nenhum dos 21 cards.
+const CHIPS = ['HTML', 'CSS', 'JAVASCRIPT', 'C#', 'C', 'ARDUINO', 'FIGMA', 'CANVA'];
 
 const CHAVE = 'mf-portfolio-tema';
 
@@ -226,6 +237,8 @@ function temChave(mapa, chave) {
   return typeof chave === 'string' && Object.hasOwn(mapa, chave);
 }
 
+const APELIDOS_TEMA = { ambar: 'papel' };
+
 // O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
 // renomear ou reordenar GLIFOS não virar página quebrada.
 const ICONE_PADRAO = Object.keys(GLIFOS)[0];
@@ -235,7 +248,7 @@ const estado = { base: 'claro', destaque: 0, icone: ICONE_PADRAO, filtro: 'todos
 function temaAtual() {
   const b = BASES[estado.base] || BASES.claro;
   const d = DESTAQUES[estado.destaque] || DESTAQUES[0];
-  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)' };
+  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)', petroleo: 'rgba(6,36,34,.82)' };
   const accent = d.cor || b.accent;
   return Object.assign({}, b, {
     accent: accent,
@@ -430,18 +443,22 @@ function abrirModal(item) {
 
   // target/rel só existem junto com href — sem isso o HTML estático fica
   // inválido, porque o <a> nasce sem destino.
-  const link = document.getElementById('modalLink');
-  if (item.url) {
-    link.hidden = false;
-    link.href = item.url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-  } else {
-    link.hidden = true;
-    link.removeAttribute('href');
-    link.removeAttribute('target');
-    link.removeAttribute('rel');
-  }
+  // Um botão por link. O primeiro leva o destaque preenchido; os outros vêm de
+  // contorno, para o modal ter uma ação principal clara em vez de uma fileira
+  // de botões todos com o mesmo peso.
+  const acoes = document.getElementById('modalAcoes');
+  const links = (item.links || []).filter(l => TIPOS_LINK[l.tipo] && l.url);
+  acoes.hidden = links.length === 0;
+  acoes.replaceChildren(...links.map((l, i) => {
+    const t = TIPOS_LINK[l.tipo];
+    const a = document.createElement('a');
+    a.className = 'botao ' + (i === 0 ? 'botao--destaque' : 'botao--contorno') + ' modal-link';
+    a.href = l.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(t.icone(), t.rotulo);
+    return a;
+  }));
 
   modal.classList.add('aberto');
   modal.inert = false;
@@ -652,7 +669,12 @@ function ligarFormulario() {
 (function iniciar() {
   const salvo = armazenamento.ler();
   if (salvo) {
-    if (temChave(BASES, salvo.base)) estado.base = salvo.base;
+    // Temas que saíram apontam para o sobrevivente mais próximo, para a escolha
+    // de quem já visitou não evaporar. O Âmbar era o tema mais parecido com o
+    // Papel de todos (distância 62, contra 125 do segundo par mais próximo), e
+    // foi removido por isso mesmo — então Papel é onde ele menos estranha.
+    const base = APELIDOS_TEMA[salvo.base] || salvo.base;
+    if (temChave(BASES, base)) estado.base = base;
     if (Number.isInteger(salvo.destaque) && salvo.destaque >= 0 && salvo.destaque < DESTAQUES.length) {
       estado.destaque = salvo.destaque;
     }
