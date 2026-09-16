@@ -240,8 +240,23 @@ function aplicarTema() {
   raiz.dataset.tema = estado.base;
 }
 
+// A troca de tema precisa atravessar TODOS os elementos ao mesmo tempo, não só
+// o fundo da página. Uma classe curta em <html> liga a transição para tudo
+// enquanto os tokens mudam e sai logo depois, para que hover e foco continuem
+// respondendo na hora no resto do tempo.
+const DURACAO_TROCA = 350;
+let fimDaTroca = null;
+
+function animarTroca() {
+  const raiz = document.documentElement;
+  raiz.classList.add('trocando-tema');
+  clearTimeout(fimDaTroca);
+  fimDaTroca = setTimeout(() => raiz.classList.remove('trocando-tema'), DURACAO_TROCA);
+}
+
 function salvar(patch) {
   Object.assign(estado, patch);
+  animarTroca();
   aplicarTema();
   armazenamento.gravar({ base: estado.base, destaque: estado.destaque, icone: estado.icone });
 }
@@ -444,6 +459,17 @@ function opcaoRadio(grupo, id, marcado, aoEscolher, montarRotulo) {
   return [input, label];
 }
 
+// O painel não é reconstruído a cada escolha: recriar os <input> apagava o foco
+// do teclado no meio da navegação por setas. Os radios nativos já cuidam do
+// :checked, então só a amostra do destaque "Padrão do tema" precisa acompanhar
+// o tema base.
+function atualizarAmostraPadrao() {
+  const el = document.getElementById('amostraPadrao');
+  if (!el) return;
+  const b = BASES[estado.base] || BASES.claro;
+  el.style.background = 'repeating-linear-gradient(45deg, ' + b.soft + ' 0 5px, ' + b.accent + ' 5px 10px)';
+}
+
 function renderPainel() {
   const grupoTema = document.getElementById('opcoesTema');
   const grupoDestaque = document.getElementById('opcoesDestaque');
@@ -452,7 +478,7 @@ function renderPainel() {
 
   grupoTema.replaceChildren(...Object.keys(BASES).flatMap(k => opcaoRadio(
     'tema', k, estado.base === k,
-    () => { salvar({ base: k }); renderPainel(); },
+    () => { salvar({ base: k }); atualizarAmostraPadrao(); },
     (label) => {
       label.className = 'opcao-tema';
       const amostra = document.createElement('span');
@@ -465,12 +491,15 @@ function renderPainel() {
 
   grupoDestaque.replaceChildren(...DESTAQUES.flatMap((d, i) => opcaoRadio(
     'destaque', String(i), estado.destaque === i,
-    () => { salvar({ destaque: i }); renderPainel(); },
+    () => { salvar({ destaque: i }); },
     (label) => {
       label.className = 'opcao-destaque';
       label.title = d.nome;
-      label.style.background = d.cor ||
-        ('repeating-linear-gradient(45deg, ' + BASES[estado.base].soft + ' 0 5px, ' + BASES[estado.base].accent + ' 5px 10px)');
+      if (d.cor) {
+        label.style.background = d.cor;
+      } else {
+        label.id = 'amostraPadrao';
+      }
       const nome = document.createElement('span');
       nome.className = 'sr-only';
       nome.textContent = d.nome;
@@ -480,7 +509,7 @@ function renderPainel() {
 
   grupoIcone.replaceChildren(...Object.keys(GLIFOS).flatMap(k => opcaoRadio(
     'icone', k, estado.icone === k,
-    () => { salvar({ icone: k }); aplicarIcone(); renderPainel(); },
+    () => { salvar({ icone: k }); aplicarIcone(); },
     (label) => {
       label.className = 'opcao-icone';
       label.title = k;
@@ -613,6 +642,7 @@ function ligarFormulario() {
   renderFiltros();
   renderGrade();
   renderPainel();
+  atualizarAmostraPadrao();
   ligarFormulario();
 
   const saudacao = document.getElementById('saudacao');
