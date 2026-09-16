@@ -195,14 +195,25 @@ const ICONES_CONTATO = {
   download: () => svgEl(null, [['path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }], ['polyline', { points: '7 10 12 15 17 10' }], ['line', { x1: 12, x2: 12, y1: 15, y2: 3 }]])
 };
 
+// Tipos de link que um projeto pode ter. A ordem aqui é a ordem dos botões no
+// modal: o que dá para ver primeiro, o que dá para ler depois.
+const TIPOS_LINK = {
+  demo:  { rotulo: 'Ver ao vivo',     icone: () => svgEl(null, [['path', { d: 'M15 3h6v6' }], ['path', { d: 'M10 14 21 3' }], ['path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }]]) },
+  figma: { rotulo: 'Ver no Figma',    icone: () => svgEl(null, [['path', { d: 'M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5Z' }], ['path', { d: 'M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2Z' }], ['path', { d: 'M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0Z' }], ['path', { d: 'M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0Z' }], ['path', { d: 'M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5Z' }]]) },
+  video: { rotulo: 'Ver o vídeo',     icone: () => svgEl(null, [['path', { d: 'm16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5' }], ['rect', { x: 2, y: 6, width: 14, height: 12, rx: 2 }]]) },
+  repo:  { rotulo: 'Abrir no GitHub', icone: () => ICONES_CONTATO.github() }
+};
+
 const CONTATOS = [
   { rotulo: 'E-mail',    valor: 'mariafernandamaneira@hotmail.com', href: 'mailto:mariafernandamaneira@hotmail.com', icone: 'email' },
   { rotulo: 'LinkedIn',  valor: 'maria-fernanda-maneira',           href: 'https://www.linkedin.com/in/maria-fernanda-maneira', icone: 'linkedin' },
   { rotulo: 'GitHub',    valor: 'github.com/imyourmafe',            href: 'https://github.com/imyourmafe', icone: 'github' },
-  { rotulo: 'Currículo', valor: 'Baixar PDF',                       href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
+  { rotulo: 'Currículo', valor: 'Ver currículo',                    href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
 ];
 
-const CHIPS = ['HTML', 'CSS', 'JAVASCRIPT', 'FIGMA', 'CANVA', 'CAPCUT'];
+// Só entra aqui o que aparece de fato na stack de algum projeto. O CAPCUT
+// estava nesta lista e não constava em nenhum dos 21 cards.
+const CHIPS = ['HTML', 'CSS', 'JAVASCRIPT', 'C#', 'C', 'ARDUINO', 'FIGMA', 'CANVA'];
 
 const CHAVE = 'mf-portfolio-tema';
 
@@ -432,18 +443,22 @@ function abrirModal(item) {
 
   // target/rel só existem junto com href — sem isso o HTML estático fica
   // inválido, porque o <a> nasce sem destino.
-  const link = document.getElementById('modalLink');
-  if (item.url) {
-    link.hidden = false;
-    link.href = item.url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-  } else {
-    link.hidden = true;
-    link.removeAttribute('href');
-    link.removeAttribute('target');
-    link.removeAttribute('rel');
-  }
+  // Um botão por link. O primeiro leva o destaque preenchido; os outros vêm de
+  // contorno, para o modal ter uma ação principal clara em vez de uma fileira
+  // de botões todos com o mesmo peso.
+  const acoes = document.getElementById('modalAcoes');
+  const links = (item.links || []).filter(l => TIPOS_LINK[l.tipo] && l.url);
+  acoes.hidden = links.length === 0;
+  acoes.replaceChildren(...links.map((l, i) => {
+    const t = TIPOS_LINK[l.tipo];
+    const a = document.createElement('a');
+    a.className = 'botao ' + (i === 0 ? 'botao--destaque' : 'botao--contorno') + ' modal-link';
+    a.href = l.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(t.icone(), t.rotulo);
+    return a;
+  }));
 
   modal.classList.add('aberto');
   modal.inert = false;
