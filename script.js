@@ -4,23 +4,25 @@
 // e repos.js e compartilham o mesmo modal de detalhe.
 
 // ---------- Temas ----------
-// O destaque tem dois papéis, e eles pedem coisas opostas:
+// Cada tema é um pacote fechado: a cor de destaque vem junto com ele e não é
+// escolhível à parte. Trocar de tema troca o conjunto inteiro, e toda
+// combinação que aparece na tela foi desenhada, não derivada de uma matriz.
+//
+// O destaque ainda tem dois papéis, e eles pedem coisas opostas:
 //
 //   preenchimento  fundo de botão, ladrilho da marca, filtro ativo.
 //                  Aqui vale a cor da paleta, exatamente como desenhada.
 //   texto          .sobrelinha, .card-categoria, ícones, contorno de foco.
 //                  Aqui a cor precisa vencer o fundo do tema por 4,5:1.
 //
-// Uma cor só não dá conta dos dois em temas claros e escuros ao mesmo tempo:
-// para passar sobre #F9D6DF (o card do tema Rosa) a luminância tem que ficar
-// abaixo de 0,125, e para passar sobre #1B1B1D (o card do tema Escuro) tem que
-// ficar acima de 0,225. Não existe interseção.
-//
-// Então --accent guarda a cor da paleta e --accent-text guarda a versão
+// Por isso --accent guarda a cor da paleta e --accent-text guarda a versão
 // legível dela, derivada por destaqueLegivel(): mesmo matiz, mesma saturação,
-// só a luminosidade anda até passar. Em 36 das 72 combinações a cor já passa e
-// nada é derivado. Ver verificarContraste() no fim do arquivo.
+// só a luminosidade anda até passar. Com os destaques travados, 8 dos 9 temas
+// passam com a cor intacta — só o Azul precisa derivar.
+//
+// O PRIMEIRO tema declarado é o padrão. Ver verificarContraste() no fim.
 const BASES = {
+  hanami:  { rotulo: 'Hanami',  bg: '#2B1E17', surface: '#3A281F', ink: '#F2D0CC', muted: '#C6A08E', soft: '#4A3527', hairline: 'rgba(242,208,204,.15)', strongLine: 'rgba(242,208,204,.42)', accent: '#EC9C9D', onAccent: '#2B1E17' },
   rosa:    { rotulo: 'Rosa',    bg: '#FFEEF2', surface: '#F9D6DF', ink: '#531222', muted: '#7A4152', soft: '#F5BAC9', hairline: 'rgba(83,18,34,.16)',    strongLine: 'rgba(83,18,34,.38)',    accent: '#972E48', onAccent: '#FFEEF2' },
   azul:    { rotulo: 'Azul',    bg: '#010A24', surface: '#061127', ink: '#E6E8EE', muted: '#BFC8EE', soft: '#1B2440', hairline: 'rgba(230,232,238,.16)', strongLine: 'rgba(230,232,238,.42)', accent: '#67749B', onAccent: '#010A24' },
   claro:   { rotulo: 'Claro',   bg: '#FAFAF9', surface: '#FFFFFF', ink: '#1B1A19', muted: '#6B6965', soft: '#EFEEEC', hairline: 'rgba(27,26,25,.12)',    strongLine: 'rgba(27,26,25,.35)',    accent: '#1B1A19', onAccent: '#FAFAF9' },
@@ -31,18 +33,6 @@ const BASES = {
   petroleo:{ rotulo: 'Petróleo',bg: '#062422', surface: '#0C302C', ink: '#E3EFEC', muted: '#9DBDB7', soft: '#123F39', hairline: 'rgba(227,239,236,.15)', strongLine: 'rgba(227,239,236,.42)', accent: '#4FC9BC', onAccent: '#062422' }
 };
 
-// A primeira opção mantém o destaque próprio de cada tema.
-const DESTAQUES = [
-  { nome: 'Padrão do tema',    cor: null,      onAccent: null },
-  { nome: 'Vinho',             cor: '#972E48', onAccent: '#FFEEF2' },
-  { nome: 'Vinho escuro',      cor: '#531222', onAccent: '#FFEEF2' },
-  { nome: 'Rosa',              cor: '#D2557E', onAccent: '#2A0913' },
-  { nome: 'Azul marinho',      cor: '#021E73', onAccent: '#E6E8EE' },
-  { nome: 'Azul acinzentado',  cor: '#67749B', onAccent: '#010A24' },
-  { nome: 'Matcha',            cor: '#4A7A45', onAccent: '#F2F5EE' },
-  { nome: 'Lavanda',           cor: '#6A4BA8', onAccent: '#F5F2FA' },
-  { nome: 'Âmbar',             cor: '#B06A1E', onAccent: '#FFF9F1' }
-];
 
 const FILTROS = [
   { id: 'todos',       rotulo: 'Todos' },
@@ -243,17 +233,19 @@ const APELIDOS_TEMA = { ambar: 'papel' };
 // renomear ou reordenar GLIFOS não virar página quebrada.
 const ICONE_PADRAO = Object.keys(GLIFOS)[0];
 
-const estado = { base: 'claro', destaque: 0, icone: ICONE_PADRAO, filtro: 'todos' };
+// Mesmo motivo do ícone: derivado em vez de escrito à mão, para reordenar os
+// temas não virar página quebrada.
+const TEMA_PADRAO = Object.keys(BASES)[0];
+
+const estado = { base: TEMA_PADRAO, icone: ICONE_PADRAO, filtro: 'todos' };
 
 function temaAtual() {
-  const b = BASES[estado.base] || BASES.claro;
-  const d = DESTAQUES[estado.destaque] || DESTAQUES[0];
-  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)', petroleo: 'rgba(6,36,34,.82)' };
-  const accent = d.cor || b.accent;
+  const b = BASES[estado.base] || BASES[TEMA_PADRAO];
+  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)',
+                              petroleo: 'rgba(6,36,34,.82)', hanami: 'rgba(43,30,23,.82)' };
   return Object.assign({}, b, {
-    accent: accent,
-    accentTexto: destaqueLegivel(accent, b.bg, b.surface, b.soft),
-    onAccent: sobreDestaque(accent, d.onAccent || b.onAccent),
+    accentTexto: destaqueLegivel(b.accent, b.bg, b.surface, b.soft),
+    onAccent: sobreDestaque(b.accent, b.onAccent),
     headerBg: cabecalhosEscuros[estado.base] || 'rgba(255,255,255,.72)'
   });
 }
@@ -293,7 +285,7 @@ function salvar(patch) {
   Object.assign(estado, patch);
   animarTroca();
   aplicarTema();
-  armazenamento.gravar({ base: estado.base, destaque: estado.destaque, icone: estado.icone });
+  armazenamento.gravar({ base: estado.base, icone: estado.icone });
 }
 
 function aplicarIcone() {
@@ -500,24 +492,15 @@ function opcaoRadio(grupo, id, marcado, aoEscolher, montarRotulo) {
 
 // O painel não é reconstruído a cada escolha: recriar os <input> apagava o foco
 // do teclado no meio da navegação por setas. Os radios nativos já cuidam do
-// :checked, então só a amostra do destaque "Padrão do tema" precisa acompanhar
-// o tema base.
-function atualizarAmostraPadrao() {
-  const el = document.getElementById('amostraPadrao');
-  if (!el) return;
-  const b = BASES[estado.base] || BASES.claro;
-  el.style.background = 'repeating-linear-gradient(45deg, ' + b.soft + ' 0 5px, ' + b.accent + ' 5px 10px)';
-}
-
+// :checked, e com o destaque travado no tema não sobrou nada para sincronizar.
 function renderPainel() {
   const grupoTema = document.getElementById('opcoesTema');
-  const grupoDestaque = document.getElementById('opcoesDestaque');
   const grupoIcone = document.getElementById('opcoesIcone');
-  if (!grupoTema || !grupoDestaque || !grupoIcone) return;
+  if (!grupoTema || !grupoIcone) return;
 
   grupoTema.replaceChildren(...Object.keys(BASES).flatMap(k => opcaoRadio(
     'tema', k, estado.base === k,
-    () => { salvar({ base: k }); atualizarAmostraPadrao(); },
+    () => { salvar({ base: k }); },
     (label) => {
       label.className = 'opcao-tema';
       const amostra = document.createElement('span');
@@ -525,24 +508,6 @@ function renderPainel() {
       amostra.setAttribute('aria-hidden', 'true');
       amostra.style.background = 'linear-gradient(135deg, ' + BASES[k].bg + ' 0 50%, ' + BASES[k].accent + ' 50% 100%)';
       label.append(amostra, document.createTextNode(BASES[k].rotulo));
-    }
-  )));
-
-  grupoDestaque.replaceChildren(...DESTAQUES.flatMap((d, i) => opcaoRadio(
-    'destaque', String(i), estado.destaque === i,
-    () => { salvar({ destaque: i }); },
-    (label) => {
-      label.className = 'opcao-destaque';
-      label.title = d.nome;
-      if (d.cor) {
-        label.style.background = d.cor;
-      } else {
-        label.id = 'amostraPadrao';
-      }
-      const nome = document.createElement('span');
-      nome.className = 'sr-only';
-      nome.textContent = d.nome;
-      label.appendChild(nome);
     }
   )));
 
@@ -675,9 +640,6 @@ function ligarFormulario() {
     // foi removido por isso mesmo — então Papel é onde ele menos estranha.
     const base = APELIDOS_TEMA[salvo.base] || salvo.base;
     if (temChave(BASES, base)) estado.base = base;
-    if (Number.isInteger(salvo.destaque) && salvo.destaque >= 0 && salvo.destaque < DESTAQUES.length) {
-      estado.destaque = salvo.destaque;
-    }
     if (temChave(GLIFOS, salvo.icone)) estado.icone = salvo.icone;
   }
 
@@ -688,7 +650,6 @@ function ligarFormulario() {
   renderFiltros();
   renderGrade();
   renderPainel();
-  atualizarAmostraPadrao();
   ligarFormulario();
 
   const saudacao = document.getElementById('saudacao');
@@ -720,40 +681,37 @@ function ligarFormulario() {
 })();
 
 // ---------- Conferência de contraste ----------
-// Roda as 72 combinações e devolve o que reprova. Não é chamada no
-// carregamento: serve para conferir no console depois de mexer na paleta.
-//   verificarContraste()            -> só as falhas
-//   verificarContraste(true)        -> a tabela inteira
+// Varre os temas e devolve o que reprova. Não é chamada no carregamento: serve
+// para conferir no console depois de mexer em alguma paleta.
+//   verificarContraste()      -> só as falhas
+//   verificarContraste(true)  -> a tabela inteira
 function verificarContraste(detalhado) {
   const linhas = [];
-  Object.entries(BASES).forEach(([id, b]) => {
-    DESTAQUES.forEach((d, i) => {
-      const accent = d.cor || b.accent;
-      const texto = destaqueLegivel(accent, b.bg, b.surface, b.soft);
-      const sobre = sobreDestaque(accent, d.onAccent || b.onAccent);
-      [
-        ['destaque como texto / bg',      texto,   b.bg,      4.5],
-        ['destaque como texto / surface', texto,   b.surface, 4.5],
-        ['ícone de destaque / soft',      texto,   b.soft,    3],
-        ['texto sobre o destaque',        sobre,   accent,    4.5],
-        ['texto secundário / bg',         b.muted, b.bg,      4.5],
-        ['texto secundário / surface',    b.muted, b.surface, 4.5],
-        ['texto secundário / soft',       b.muted, b.soft,    4.5],
-        ['texto principal / bg',          b.ink,   b.bg,      4.5],
-        ['texto principal / surface',     b.ink,   b.surface, 4.5],
-        ['texto principal / soft',        b.ink,   b.soft,    4.5]
-      ].forEach(([par, fg, bg, min]) => {
-        const r = contraste(fg, bg);
-        if (detalhado || r < min) {
-          linhas.push({ tema: b.rotulo, destaque: d.nome, par: par,
-                        razao: Number(r.toFixed(2)), minimo: min,
-                        passa: r >= min, frente: fg, fundo: bg });
-        }
-      });
+  Object.values(BASES).forEach(b => {
+    const texto = destaqueLegivel(b.accent, b.bg, b.surface, b.soft);
+    const sobre = sobreDestaque(b.accent, b.onAccent);
+    [
+      ['destaque como texto / bg',      texto,   b.bg,      4.5],
+      ['destaque como texto / surface', texto,   b.surface, 4.5],
+      ['ícone de destaque / soft',      texto,   b.soft,    3],
+      ['texto sobre o destaque',        sobre,   b.accent,  4.5],
+      ['texto secundário / bg',         b.muted, b.bg,      4.5],
+      ['texto secundário / surface',    b.muted, b.surface, 4.5],
+      ['texto secundário / soft',       b.muted, b.soft,    4.5],
+      ['texto principal / bg',          b.ink,   b.bg,      4.5],
+      ['texto principal / surface',     b.ink,   b.surface, 4.5],
+      ['texto principal / soft',        b.ink,   b.soft,    4.5]
+    ].forEach(([par, fg, bg, min]) => {
+      const r = contraste(fg, bg);
+      if (detalhado || r < min) {
+        linhas.push({ tema: b.rotulo, par: par, razao: Number(r.toFixed(2)),
+                      minimo: min, passa: r >= min, frente: fg, fundo: bg });
+      }
     });
   });
   const falhas = linhas.filter(l => !l.passa).length;
-  console.log(falhas ? falhas + ' combinação(ões) reprovada(s)' : '72 combinações, nenhuma reprovação');
+  const n = Object.keys(BASES).length;
+  console.log(falhas ? falhas + ' par(es) reprovado(s)' : n + ' temas, nenhuma reprovação');
   if (linhas.length) console.table(linhas);
   return linhas;
 }
