@@ -175,7 +175,9 @@ const GLIFOS = {
   anel:      { rotulo: 'Anel',      desenhar: () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 8.5 }], ['circle', { cx: 12, cy: 12, r: 3, fill: 'currentColor', stroke: 'none' }]]) },
   hexagono:  { rotulo: 'Hexágono',  desenhar: () => svgEl(null, [['polygon', { points: '12 2.5 20.5 7.25 20.5 16.75 12 21.5 3.5 16.75 3.5 7.25' }]]) },
   losango:   { rotulo: 'Losango',   desenhar: () => svgEl(null, [['path', { d: 'M12 3 21 12 12 21 3 12Z' }]]) },
-  ponto:     { rotulo: 'Ponto',     desenhar: () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 6, fill: 'currentColor', stroke: 'none' }]]) }
+  chip:      { rotulo: 'Chip',      desenhar: () => svgEl(null, [['rect', { x: 7, y: 6, width: 10, height: 12, rx: 2 }],
+                                                                 ['path', { d: 'M3 10 H7' }],  ['path', { d: 'M3 14 H7' }],
+                                                                 ['path', { d: 'M17 10 H21' }], ['path', { d: 'M17 14 H21' }]]) }
 };
 
 const ICONES_CONTATO = {
@@ -228,6 +230,11 @@ function temChave(mapa, chave) {
 }
 
 const APELIDOS_TEMA = { ambar: 'papel' };
+
+// Mesma ideia para os glifos. O Ponto era um círculo cheio — a única marca do
+// conjunto que não dizia nada sobre o trabalho — e deu lugar ao Chip. Quem
+// tinha o Ponto salvo continua com um ícone, não com o padrão.
+const APELIDOS_ICONE = { ponto: 'chip' };
 
 // O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
 // renomear ou reordenar GLIFOS não virar página quebrada.
@@ -425,6 +432,11 @@ function abrirModal(item) {
   document.getElementById('modalCategoria').textContent = NOMES_CAT[item.categorias[0]] || '';
   document.getElementById('modalTitulo').textContent = item.titulo;
   document.getElementById('modalDescricao').textContent = item.descricao;
+
+  // Projeto sem a frase não mostra o rótulo vazio.
+  const desafio = document.getElementById('modalDesafio');
+  desafio.hidden = !item.desafio;
+  document.getElementById('modalDesafioTexto').textContent = item.desafio || '';
 
   const stack = document.getElementById('modalStack');
   stack.replaceChildren(...(item.stack || []).map(s => {
@@ -638,9 +650,12 @@ function ligarFormulario() {
     // de quem já visitou não evaporar. O Âmbar era o tema mais parecido com o
     // Papel de todos (distância 62, contra 125 do segundo par mais próximo), e
     // foi removido por isso mesmo — então Papel é onde ele menos estranha.
-    const base = APELIDOS_TEMA[salvo.base] || salvo.base;
+    // temChave em vez de acesso direto: um valor como "constructor" gravado no
+    // localStorage devolveria uma função no lugar do apelido.
+    const base = temChave(APELIDOS_TEMA, salvo.base) ? APELIDOS_TEMA[salvo.base] : salvo.base;
     if (temChave(BASES, base)) estado.base = base;
-    if (temChave(GLIFOS, salvo.icone)) estado.icone = salvo.icone;
+    const icone = temChave(APELIDOS_ICONE, salvo.icone) ? APELIDOS_ICONE[salvo.icone] : salvo.icone;
+    if (temChave(GLIFOS, icone)) estado.icone = icone;
   }
 
   aplicarTema();

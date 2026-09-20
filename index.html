@@ -171,6 +171,12 @@
                trocar pelo título do projeto aberto. -->
           <h3 class="titulo-display modal-titulo" id="modalTitulo">Detalhe do projeto</h3>
           <p class="modal-descricao" id="modalDescricao"></p>
+          <!-- A frase sobre o que foi difícil. Fica oculta em projeto que não
+               tem o campo, então a ausência não deixa um rótulo solto. -->
+          <div class="modal-desafio" id="modalDesafio" hidden>
+            <span class="modal-desafio-rotulo">O que foi difícil</span>
+            <p class="modal-desafio-texto" id="modalDesafioTexto"></p>
+          </div>
           <ul class="stack" id="modalStack"></ul>
           <!-- Um botão por link do projeto, montados por script.js a partir de
                item.links. Fica oculto quando o projeto não tem link nenhum. -->
