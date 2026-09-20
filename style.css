@@ -1,20 +1,19 @@
 /* ===== Tokens de tema =====
-   Os valores são escritos por script.js em document.documentElement, porque a
-   cor de destaque é escolhida separadamente da base (8 bases x 9 destaques).
-   Os valores abaixo são o tema "Claro" e servem de ponto de partida caso o JS
-   não rode. */
+   Os valores são escritos por script.js em document.documentElement. Cada tema
+   é um pacote fechado — a cor de destaque vem com ele — então aqui embaixo fica
+   o tema padrão, "Hanami", que serve de ponto de partida caso o JS não rode. */
 :root{
-  --bg: #FAFAF9;
-  --surface: #FFFFFF;
-  --ink: #1B1A19;
-  --muted: #6B6965;
-  --soft: #EFEEEC;
-  --hairline: rgba(27,26,25,.12);
-  --strong-line: rgba(27,26,25,.35);
-  --accent: #1B1A19;
-  --accent-text: #1B1A19;
-  --on-accent: #FAFAF9;
-  --header-bg: rgba(255,255,255,.72);
+  --bg: #2B1E17;
+  --surface: #3A281F;
+  --ink: #F2D0CC;
+  --muted: #C6A08E;
+  --soft: #4A3527;
+  --hairline: rgba(242,208,204,.15);
+  --strong-line: rgba(242,208,204,.42);
+  --accent: #EC9C9D;
+  --accent-text: #EC9C9D;
+  --on-accent: #2B1E17;
+  --header-bg: rgba(43,30,23,.82);
 
   --largura: 1140px;
   --raio: 18px;
@@ -195,14 +194,6 @@ img{ max-width: 100%; }
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,.12);
 }
-.opcao-destaque{
-  width: 34px; height: 34px;
-  border-radius: 999px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  outline: 1px solid rgba(0,0,0,.1);
-  outline-offset: -1px;
-}
 .opcao-icone{
   width: 40px; height: 40px;
   display: grid; place-items: center;
@@ -213,10 +204,8 @@ img{ max-width: 100%; }
   border: 1.5px solid var(--hairline);
 }
 .opcoes input:checked + .opcao-tema{ background: var(--soft); border-color: var(--accent-text); }
-.opcoes input:checked + .opcao-destaque{ border-color: var(--ink); }
 .opcoes input:checked + .opcao-icone{ background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .opcoes input:focus-visible + .opcao-tema,
-.opcoes input:focus-visible + .opcao-destaque,
 .opcoes input:focus-visible + .opcao-icone{
   outline: 2px solid var(--accent-text);
   outline-offset: 2px;
