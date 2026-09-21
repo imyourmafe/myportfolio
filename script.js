@@ -17,7 +17,7 @@
 //
 // Por isso --accent guarda a cor da paleta e --accent-text guarda a versão
 // legível dela, derivada por destaqueLegivel(): mesmo matiz, mesma saturação,
-// só a luminosidade anda até passar. Com os destaques travados, 8 dos 9 temas
+// só a luminosidade anda até passar. Com os destaques travados, 9 dos 10 temas
 // passam com a cor intacta — só o Azul precisa derivar.
 //
 // O PRIMEIRO tema declarado é o padrão. Ver verificarContraste() no fim.
@@ -30,7 +30,11 @@ const BASES = {
   papel:   { rotulo: 'Papel',   bg: '#F6F2EC', surface: '#FFFDFA', ink: '#2A241E', muted: '#706356', soft: '#EBE2D6', hairline: 'rgba(42,36,30,.13)',    strongLine: 'rgba(42,36,30,.35)',    accent: '#A04A2E', onAccent: '#FFFDFA' },
   matcha:  { rotulo: 'Matcha',  bg: '#F2F5EE', surface: '#FFFFFF', ink: '#1F2A1C', muted: '#5B6C54', soft: '#DFE9D6', hairline: 'rgba(31,42,28,.13)',    strongLine: 'rgba(31,42,28,.35)',    accent: '#4A7A45', onAccent: '#F2F5EE' },
   lavanda: { rotulo: 'Lavanda', bg: '#F5F2FA', surface: '#FFFFFF', ink: '#241B33', muted: '#6A5F83', soft: '#E6DEF5', hairline: 'rgba(36,27,51,.13)',    strongLine: 'rgba(36,27,51,.35)',    accent: '#6A4BA8', onAccent: '#F5F2FA' },
-  petroleo:{ rotulo: 'Petróleo',bg: '#062422', surface: '#0C302C', ink: '#E3EFEC', muted: '#9DBDB7', soft: '#123F39', hairline: 'rgba(227,239,236,.15)', strongLine: 'rgba(227,239,236,.42)', accent: '#4FC9BC', onAccent: '#062422' }
+  petroleo:{ rotulo: 'Petróleo',bg: '#062422', surface: '#0C302C', ink: '#E3EFEC', muted: '#9DBDB7', soft: '#123F39', hairline: 'rgba(227,239,236,.15)', strongLine: 'rgba(227,239,236,.42)', accent: '#4FC9BC', onAccent: '#062422' },
+  // Único tema de fundo claro que não é quase-branco: a página é azul-poeira,
+  // os cartões são creme e o vinho carrega todo o texto. As três cores da
+  // paleta ocupam papel estrutural em vez de virarem detalhe.
+  cherry:  { rotulo: 'Cherry Sky', bg: '#A5B9C6', surface: '#FFFFCD', ink: '#5D0F15', muted: '#502226', soft: '#C0D0D9', hairline: 'rgba(93,15,21,.15)',  strongLine: 'rgba(93,15,21,.42)',  accent: '#5D0F15', onAccent: '#FFFFCD' }
 };
 
 
@@ -248,12 +252,16 @@ const estado = { base: TEMA_PADRAO, icone: ICONE_PADRAO, filtro: 'todos' };
 
 function temaAtual() {
   const b = BASES[estado.base] || BASES[TEMA_PADRAO];
-  const cabecalhosEscuros = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)',
-                              petroleo: 'rgba(6,36,34,.82)', hanami: 'rgba(43,30,23,.82)' };
+  // O cabeçalho é translúcido sobre o conteúdo que rola por baixo, então precisa
+  // da cor do próprio tema. O branco só serve de padrão para os temas de fundo
+  // quase-branco; qualquer tema com fundo de cor entra aqui, claro ou escuro.
+  const cabecalhos = { escuro: 'rgba(17,17,18,.82)', azul: 'rgba(1,10,36,.82)',
+                       petroleo: 'rgba(6,36,34,.82)', hanami: 'rgba(43,30,23,.82)',
+                       cherry: 'rgba(165,185,198,.86)' };
   return Object.assign({}, b, {
     accentTexto: destaqueLegivel(b.accent, b.bg, b.surface, b.soft),
     onAccent: sobreDestaque(b.accent, b.onAccent),
-    headerBg: cabecalhosEscuros[estado.base] || 'rgba(255,255,255,.72)'
+    headerBg: temChave(cabecalhos, estado.base) ? cabecalhos[estado.base] : 'rgba(255,255,255,.72)'
   });
 }
 
