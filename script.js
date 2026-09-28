@@ -176,9 +176,12 @@ const GLIFOS = {
   codigo:    { rotulo: 'Código',    desenhar: () => glifoTexto('</>', 'ui-monospace, SFMono-Regular, Menlo, monospace', '12px') },
   faisca:    { rotulo: 'Faísca',    desenhar: () => svgEl(null, [['path', { d: 'M12 3c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9Z' }]]) },
   asterisco: { rotulo: 'Asterisco', desenhar: () => svgEl(null, [['path', { d: 'M12 4v16' }], ['path', { d: 'M4.5 8 19.5 16' }], ['path', { d: 'M19.5 8 4.5 16' }]]) },
-  anel:      { rotulo: 'Anel',      desenhar: () => svgEl(null, [['circle', { cx: 12, cy: 12, r: 8.5 }], ['circle', { cx: 12, cy: 12, r: 3, fill: 'currentColor', stroke: 'none' }]]) },
-  hexagono:  { rotulo: 'Hexágono',  desenhar: () => svgEl(null, [['polygon', { points: '12 2.5 20.5 7.25 20.5 16.75 12 21.5 3.5 16.75 3.5 7.25' }]]) },
-  losango:   { rotulo: 'Losango',   desenhar: () => svgEl(null, [['path', { d: 'M12 3 21 12 12 21 3 12Z' }]]) },
+  layout:    { rotulo: 'Layout',    desenhar: () => svgEl(null, [['rect', { x: 4, y: 5, width: 16, height: 14, rx: 2 }],
+                                                                 ['path', { d: 'M4 10 H20' }]]) },
+  bezier:    { rotulo: 'Bézier',    desenhar: () => svgEl(null, [['path', { d: 'M4 19 C 4 10 20 14 20 5' }],
+                                                                 ['circle', { cx: 4,  cy: 19, r: 3, fill: 'currentColor', stroke: 'none' }],
+                                                                 ['circle', { cx: 20, cy: 5,  r: 3, fill: 'currentColor', stroke: 'none' }]]) },
+  onda:      { rotulo: 'Onda',      desenhar: () => svgEl(null, [['path', { d: 'M3 12 C 6 4 9 4 12 12 C 15 20 18 20 21 12' }]]) },
   chip:      { rotulo: 'Chip',      desenhar: () => svgEl(null, [['rect', { x: 7, y: 6, width: 10, height: 12, rx: 2 }],
                                                                  ['path', { d: 'M3 10 H7' }],  ['path', { d: 'M3 14 H7' }],
                                                                  ['path', { d: 'M17 10 H21' }], ['path', { d: 'M17 14 H21' }]]) }
@@ -237,10 +240,16 @@ function temChave(mapa, chave) {
 
 const APELIDOS_TEMA = { ambar: 'papel' };
 
-// Mesma ideia para os glifos. O Ponto era um círculo cheio — a única marca do
-// conjunto que não dizia nada sobre o trabalho — e deu lugar ao Chip. Quem
-// tinha o Ponto salvo continua com um ícone, não com o padrão.
-const APELIDOS_ICONE = { ponto: 'chip' };
+// Mesma ideia para os glifos. Anel, Hexágono e Losango eram geometria pura:
+// não diziam nada sobre o trabalho, e ocupavam três das oito vagas da marca.
+// Saíram para Layout (interface), Bézier (desenho vetorial) e Onda (sinal),
+// no rastro do Chip, que já tinha substituído o Ponto pelo mesmo motivo.
+// Cada apelido aponta para o glifo que assumiu a vaga, então quem tinha um
+// deles salvo continua com um ícone escolhido em vez de cair no padrão.
+//
+// O Asterisco fica: é a única forma abstrata que se sustenta, por ser sinal
+// tipográfico e não só um polígono.
+const APELIDOS_ICONE = { ponto: 'chip', anel: 'layout', hexagono: 'bezier', losango: 'onda' };
 
 // O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
 // renomear ou reordenar GLIFOS não virar página quebrada.
