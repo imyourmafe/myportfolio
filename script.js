@@ -172,7 +172,6 @@ function glifoTexto(conteudo, familia, tamanho) {
 // `ICONES_CONTATO`, logo abaixo, continua sendo mapa de funções puro de
 // propósito: aqueles ícones não são escolhíveis e não precisam de rótulo.
 const GLIFOS = {
-  monograma: { rotulo: 'Monograma', desenhar: () => glifoTexto('MF', "'Instrument Serif', Georgia, serif", '18px') },
   codigo:    { rotulo: 'Código',    desenhar: () => glifoTexto('</>', 'ui-monospace, SFMono-Regular, Menlo, monospace', '12px') },
   faisca:    { rotulo: 'Faísca',    desenhar: () => svgEl(null, [['path', { d: 'M12 3c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9Z' }]]) },
   asterisco: { rotulo: 'Asterisco', desenhar: () => svgEl(null, [['path', { d: 'M12 4v16' }], ['path', { d: 'M4.5 8 19.5 16' }], ['path', { d: 'M19.5 8 4.5 16' }]]) },
@@ -251,6 +250,12 @@ const APELIDOS_TEMA = { ambar: 'papel' };
 // tipográfico e não só um polígono.
 const APELIDOS_ICONE = { ponto: 'chip', anel: 'layout', hexagono: 'bezier', losango: 'onda' };
 
+// O Monograma saiu daqui: o "MF" passou a ser o nome da marca, ao lado do
+// ladrilho, então tê-lo também como ícone escolhível mostrava a mesma coisa
+// duas vezes no cabeçalho. Ele não foi substituído por outro glifo — mudou de
+// lugar —, e por isso não ganhou apelido: quem o tinha salvo cai no padrão,
+// que é o comportamento certo aqui.
+//
 // O primeiro glifo declarado é o padrão. Derivado em vez de escrito à mão, para
 // renomear ou reordenar GLIFOS não virar página quebrada.
 const ICONE_PADRAO = Object.keys(GLIFOS)[0];

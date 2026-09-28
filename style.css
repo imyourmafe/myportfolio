@@ -115,7 +115,15 @@ img{ max-width: 100%; }
   background: var(--accent);
   color: var(--on-accent);
 }
-.marca-nome{ font-weight: 700; font-size: .95rem; letter-spacing: .02em; }
+/* O nome da marca é o mesmo monograma do glifo 'Monograma': mesma família e
+   mesmo peso, para os dois não divergirem. */
+.marca-nome{
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: .01em;
+}
 
 .nav-principal{ display: flex; align-items: center; gap: 4px; }
 .nav-link{
