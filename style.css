@@ -115,8 +115,9 @@ img{ max-width: 100%; }
   background: var(--accent);
   color: var(--on-accent);
 }
-/* O nome da marca é o mesmo monograma do glifo 'Monograma': mesma família e
-   mesmo peso, para os dois não divergirem. */
+/* O monograma vive aqui, e só aqui: era também um glifo escolhível, o que
+   mostrava "MF" duas vezes no cabeçalho. Usa a serifada de display, a mesma
+   dos títulos. */
 .marca-nome{
   font-family: 'Instrument Serif', Georgia, serif;
   font-weight: 400;
