@@ -14,20 +14,21 @@
     <link rel="apple-touch-icon" href="images/meta/apple-touch-icon.png">
 
     <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
-    <!-- TODO: og:image e twitter:image precisam ser URLs absolutas para os crawlers
-         funcionarem (ex.: https://seu-usuario.github.io/myportfolio/images/meta/og-image.jpg).
-         Ajuste para a URL real assim que o site estiver publicado. -->
+    <!-- Os crawlers não resolvem caminho relativo: og:image e twitter:image
+         precisam da URL absoluta do site publicado, senão o link compartilhado
+         aparece sem imagem nenhuma. -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://imyourmafe.github.io/myportfolio/">
     <meta property="og:title" content="Portfólio — Maria Fernanda">
     <meta property="og:description" content="Portfólio de Maria Fernanda de Almeida Maneira — estudante de Engenharia da Computação, entre design, eletrônica e código.">
-    <meta property="og:image" content="images/meta/og-image.jpg">
+    <meta property="og:image" content="https://imyourmafe.github.io/myportfolio/images/meta/og-image.jpg">
     <meta property="og:locale" content="pt_BR">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portfólio — Maria Fernanda">
     <meta name="twitter:description" content="Portfólio de Maria Fernanda de Almeida Maneira — estudante de Engenharia da Computação, entre design, eletrônica e código.">
-    <meta name="twitter:image" content="images/meta/og-image.jpg">
+    <meta name="twitter:image" content="https://imyourmafe.github.io/myportfolio/images/meta/og-image.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
