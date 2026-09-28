@@ -204,7 +204,9 @@ const CONTATOS = [
   { rotulo: 'E-mail',    valor: 'mariafernandamaneira@hotmail.com', href: 'mailto:mariafernandamaneira@hotmail.com', icone: 'email' },
   { rotulo: 'LinkedIn',  valor: 'maria-fernanda-maneira',           href: 'https://www.linkedin.com/in/maria-fernanda-maneira', icone: 'linkedin' },
   { rotulo: 'GitHub',    valor: 'github.com/imyourmafe',            href: 'https://github.com/imyourmafe', icone: 'github' },
-  { rotulo: 'Currículo', valor: 'Ver currículo',                    href: 'https://canva.link/curriculo-mfmaneira', icone: 'download' }
+  // O PDF mora no próprio repositório: link do Canva some sem aviso se a URL
+  // mudar ou a conta for alterada, e aí o botão quebra sem deixar rastro.
+  { rotulo: 'Currículo', valor: 'Ver currículo',                    href: 'curriculo/maria-fernanda-maneira.pdf', icone: 'download' }
 ];
 
 // Só entra aqui o que aparece de fato na stack de algum projeto. O CAPCUT
