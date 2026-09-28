@@ -37,6 +37,6 @@ destaque tem dois papéis separados:
 | `repos.js` | repositórios de código exibidos na mesma grade |
 | `images/` | capas dos projetos e ícones do site |
 
-## Contat
+## Contato
 - E-mail: mariafernandamaneira@hotmail.com
 - LinkedIn: https://www.linkedin.com/in/maria-fernanda-maneira
